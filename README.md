@@ -1,6 +1,6 @@
 - 👋 Hi, I’m João Dumas Diniz @joaodiniz99
 - 👀 I’m interested in Full Stack Development
-- 🌱 I’m currently learning Laravel 9
+- 🌱 I’m currently learning React
 - 📫 How to reach me joaopbddiniz@gmail.com
 
 <!---
