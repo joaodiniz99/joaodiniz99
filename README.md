@@ -7,5 +7,5 @@
 <br/>
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/joaodiniz99/joaodiniz99/output/github-contribution-grid-snake-dark.svg" alt="Contribution snake" />
+  <img src="./assets/agent-arcade.svg" width="100%" alt="Agent arcade" />
 </div>

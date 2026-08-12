@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="230" viewBox="0 0 1200 230" role="img" aria-label="Agent arcade">
+  <defs>
+    <style>
+      <![CDATA[
+        .cabinet { fill: #0a0a0f; stroke: #1e2433; stroke-width: 2; }
+        .bezel { fill: none; stroke: #2a3142; stroke-width: 1.5; }
+        .title { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 18px; font-weight: 700; fill: #e8ecf4; letter-spacing: 4px; }
+        .meta { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; fill: #8b93a7; letter-spacing: 2px; }
+        .score { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; fill: #c5ccd9; letter-spacing: 1.5px; }
+        .online-text { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; font-weight: 700; fill: #0a0a0f; letter-spacing: 1.5px; }
+        .term { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; fill: #4aff8a; letter-spacing: 1px; }
+        .coin { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; fill: #6b7285; letter-spacing: 2px; }
+        .dot { fill: #3a4154; }
+        .dot-pulse { fill: #5a6478; }
+        .agent-body { fill: #1a2030; stroke: #8b93a7; stroke-width: 1.5; }
+        .agent-core { fill: #4aff8a; }
+        .agent-glow { fill: #4aff8a; opacity: 0.25; }
+        .line { stroke: #1a2030; stroke-width: 1; }
+        .hud-line { stroke: #252b3a; stroke-width: 1; }
+        .term-line { opacity: 0; animation: termCycle 8s infinite; }
+        .term-line:nth-child(1) { animation-delay: 0s; }
+        .term-line:nth-child(2) { animation-delay: 2s; }
+        .term-line:nth-child(3) { animation-delay: 4s; }
+        .term-line:nth-child(4) { animation-delay: 6s; }
+        @keyframes termCycle {
+          0% { opacity: 0; }
+          4% { opacity: 1; }
+          22% { opacity: 1; }
+          26% { opacity: 0; }
+          100% { opacity: 0; }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 0.35; }
+          50% { opacity: 1; }
+        }
+        @keyframes chipGlow {
+          0%, 100% { opacity: 0.85; }
+          50% { opacity: 1; }
+        }
+        .pulse-a { animation: pulse 2.4s ease-in-out infinite; }
+        .pulse-b { animation: pulse 3.1s ease-in-out infinite 0.4s; }
+        .pulse-c { animation: pulse 2.7s ease-in-out infinite 0.9s; }
+        .pulse-d { animation: pulse 3.6s ease-in-out infinite 1.3s; }
+        .chip { animation: chipGlow 2s ease-in-out infinite; }
+      ]]>
+    </style>
+    <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#4aff8a" stop-opacity="0.9"/>
+      <stop offset="70%" stop-color="#4aff8a" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#4aff8a" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <clipPath id="playfield">
+      <rect x="40" y="52" width="1120" height="130" rx="6"/>
+    </clipPath>
+  </defs>
+
+  <!-- Cabinet background -->
+  <rect width="1200" height="230" class="cabinet" rx="10"/>
+  <rect x="18" y="14" width="1164" height="202" rx="8" class="bezel"/>
+
+  <!-- Subtle grid -->
+  <g opacity="0.35">
+    <g class="line">
+      <!-- verticals -->
+      <line x1="100" y1="52" x2="100" y2="182"/>
+      <line x1="200" y1="52" x2="200" y2="182"/>
+      <line x1="300" y1="52" x2="300" y2="182"/>
+      <line x1="400" y1="52" x2="400" y2="182"/>
+      <line x1="500" y1="52" x2="500" y2="182"/>
+      <line x1="600" y1="52" x2="600" y2="182"/>
+      <line x1="700" y1="52" x2="700" y2="182"/>
+      <line x1="800" y1="52" x2="800" y2="182"/>
+      <line x1="900" y1="52" x2="900" y2="182"/>
+      <line x1="1000" y1="52" x2="1000" y2="182"/>
+      <line x1="1100" y1="52" x2="1100" y2="182"/>
+      <!-- horizontals -->
+      <line x1="40" y1="78" x2="1160" y2="78"/>
+      <line x1="40" y1="104" x2="1160" y2="104"/>
+      <line x1="40" y1="130" x2="1160" y2="130"/>
+      <line x1="40" y1="156" x2="1160" y2="156"/>
+    </g>
+  </g>
+
+  <!-- Top HUD -->
+  <text x="48" y="38" class="title">AGENT.ARCADE</text>
+  <text x="620" y="38" class="score" text-anchor="middle">SCORE  :  //  LIVE</text>
+
+  <!-- ONLINE chip -->
+  <g class="chip" transform="translate(1040, 22)">
+    <rect x="0" y="0" width="84" height="22" rx="11" fill="#4aff8a"/>
+    <circle cx="14" cy="11" r="4" fill="#0a0a0f"/>
+    <text x="48" y="15" class="online-text" text-anchor="middle">ONLINE</text>
+  </g>
+
+  <line x1="40" y1="48" x2="1160" y2="48" class="hud-line"/>
+
+  <!-- Dot field (playfield) -->
+  <g clip-path="url(#playfield)">
+    <!-- static dots row-ish scatter -->
+    <g class="dot">
+      <circle cx="70" cy="70" r="2.2"/><circle cx="110" cy="88" r="2"/><circle cx="150" cy="66" r="2.2"/>
+      <circle cx="190" cy="110" r="2"/><circle cx="230" cy="74" r="2.2"/><circle cx="270" cy="132" r="2"/>
+      <circle cx="310" cy="90" r="2.2"/><circle cx="350" cy="148" r="2"/><circle cx="390" cy="68" r="2.2"/>
+      <circle cx="430" cy="118" r="2"/><circle cx="470" cy="96" r="2.2"/><circle cx="510" cy="160" r="2"/>
+      <circle cx="550" cy="72" r="2.2"/><circle cx="590" cy="124" r="2"/><circle cx="630" cy="86" r="2.2"/>
+      <circle cx="670" cy="150" r="2"/><circle cx="710" cy="100" r="2.2"/><circle cx="750" cy="64" r="2"/>
+      <circle cx="790" cy="138" r="2.2"/><circle cx="830" cy="92" r="2"/><circle cx="870" cy="116" r="2.2"/>
+      <circle cx="910" cy="70" r="2"/><circle cx="950" cy="154" r="2.2"/><circle cx="990" cy="108" r="2"/>
+      <circle cx="1030" cy="80" r="2.2"/><circle cx="1070" cy="128" r="2"/><circle cx="1110" cy="98" r="2.2"/>
+      <circle cx="90" cy="140" r="2"/><circle cx="170" cy="156" r="2.2"/><circle cx="250" cy="100" r="2"/>
+      <circle cx="330" cy="168" r="2.2"/><circle cx="410" cy="84" r="2"/><circle cx="490" cy="136" r="2.2"/>
+      <circle cx="570" cy="108" r="2"/><circle cx="650" cy="164" r="2.2"/><circle cx="730" cy="78" r="2"/>
+      <circle cx="810" cy="170" r="2.2"/><circle cx="890" cy="140" r="2"/><circle cx="970" cy="66" r="2.2"/>
+      <circle cx="1050" cy="156" r="2"/><circle cx="1130" cy="120" r="2.2"/>
+      <circle cx="130" cy="120" r="2"/><circle cx="210" cy="148" r="2.2"/><circle cx="290" cy="60" r="2"/>
+      <circle cx="370" cy="112" r="2.2"/><circle cx="450" cy="168" r="2"/><circle cx="530" cy="88" r="2.2"/>
+      <circle cx="610" cy="146" r="2"/><circle cx="690" cy="62" r="2.2"/><circle cx="770" cy="120" r="2"/>
+      <circle cx="850" cy="160" r="2.2"/><circle cx="930" cy="100" r="2"/><circle cx="1010" cy="144" r="2.2"/>
+      <circle cx="1090" cy="64" r="2"/><circle cx="1150" cy="150" r="2.2"/>
+    </g>
+
+    <!-- pulsing dots -->
+    <g class="dot-pulse">
+      <circle class="pulse-a" cx="140" cy="100" r="2.6"/>
+      <circle class="pulse-b" cx="320" cy="140" r="2.4"/>
+      <circle class="pulse-c" cx="480" cy="76" r="2.8"/>
+      <circle class="pulse-d" cx="640" cy="118" r="2.5"/>
+      <circle class="pulse-a" cx="760" cy="152" r="2.6"/>
+      <circle class="pulse-b" cx="920" cy="88" r="2.4"/>
+      <circle class="pulse-c" cx="1040" cy="130" r="2.7"/>
+      <circle class="pulse-d" cx="220" cy="164" r="2.3"/>
+      <circle class="pulse-a" cx="560" cy="154" r="2.5"/>
+      <circle class="pulse-b" cx="860" cy="70" r="2.6"/>
+      <circle class="pulse-c" cx="400" cy="100" r="2.4"/>
+      <circle class="pulse-d" cx="1000" cy="90" r="2.5"/>
+    </g>
+
+    <!-- Agent craft with motion path -->
+    <g>
+      <animateMotion dur="8s" repeatCount="indefinite" rotate="auto" path="M 80,120 C 200,70 280,170 400,100 S 560,150 700,90 S 900,160 1040,110 S 1120,80 1140,120 C 1120,160 900,70 760,140 S 520,80 360,150 S 180,90 80,120"/>
+      <!-- soft glow -->
+      <circle cx="0" cy="0" r="14" fill="url(#coreGlow)"/>
+      <!-- diamond hull -->
+      <path d="M 0,-11 L 9,0 L 0,11 L -9,0 Z" class="agent-body" filter="url(#softGlow)"/>
+      <!-- square thruster / craft body -->
+      <rect x="-5" y="-5" width="10" height="10" rx="1.5" class="agent-body" transform="rotate(45)"/>
+      <!-- solid green core -->
+      <circle cx="0" cy="0" r="3.2" class="agent-core"/>
+      <!-- tiny trail dots -->
+      <circle cx="-12" cy="0" r="1.4" fill="#4aff8a" opacity="0.55"/>
+      <circle cx="-17" cy="1" r="1" fill="#4aff8a" opacity="0.3"/>
+    </g>
+  </g>
+
+  <!-- Bottom bar -->
+  <line x1="40" y1="188" x2="1160" y2="188" class="hud-line"/>
+
+  <!-- Terminal cycling lines -->
+  <g transform="translate(48, 208)">
+    <text class="term term-line" x="0" y="0">&gt; sense</text>
+    <text class="term term-line" x="0" y="0">&gt; decide</text>
+    <text class="term term-line" x="0" y="0">&gt; ship</text>
+    <text class="term term-line" x="0" y="0">&gt; stay sharp</text>
+  </g>
+
+  <text x="1152" y="208" class="coin" text-anchor="end">INSERT COIN · 0</text>
+</svg>
