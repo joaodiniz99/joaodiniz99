@@ -6,9 +6,9 @@
 //   node tools/black-hole.mjs --preset dense --seed 7 > /tmp/variant.svg
 
 const PRESETS = {
-  quiet: { rings: 150, opBase: 0.30, turb: 0.55, beamMax: 0.75, stars: 170, underOp: 0.32, wIn: 0.72 },
-  halo:  { rings: 230, opBase: 0.50, turb: 0.85, beamMax: 1.00, stars: 220, underOp: 0.42, wIn: 0.85 },
-  dense: { rings: 270, opBase: 0.66, turb: 1.15, beamMax: 1.00, stars: 260, underOp: 0.52, wIn: 0.95 },
+  quiet: { rings: 150, opBase: 0.44, turb: 0.55, beamMax: 0.75, stars: 170, underOp: 0.32, wIn: 0.72 },
+  halo:  { rings: 230, opBase: 0.70, turb: 0.85, beamMax: 1.00, stars: 220, underOp: 0.42, wIn: 0.85 },
+  dense: { rings: 270, opBase: 0.92, turb: 1.15, beamMax: 1.00, stars: 260, underOp: 0.52, wIn: 0.95 },
 };
 
 const argv = process.argv.slice(2);
@@ -25,7 +25,7 @@ const P = {
   domeGain: 4.80,           // how fast the halo climbs with radius
   bendK: 1.04,              // deflection floor, in units of the shadow radius
   bendM: 4,                 // how sharply the deflection falls off with distance
-  falloff: 0.78,            // radial brightness decay
+  falloff: 1.15,            // radial brightness decay
   scaleH: 0.028,            // disk thickness as a fraction of orbital radius
   ink: '#e2e2e8',
   bg: '#0a0a0f',
@@ -117,24 +117,33 @@ const radiusAt = (o, th) => {
 // centre is what makes the near side of the disk skirt the lower limb instead
 // of cutting straight across it, and it keeps the silhouette a full circle.
 const bend = P.Rsh * P.bendK;
-function deflect(x, y) {
+
+// Only light that grazes the hole is deflected. Material between us and the
+// hole is not lensed at all — it travels straight and crosses in front of the
+// shadow. `w` carries that: 0 on the near side, 1 directly behind.
+function deflect(x, y, w = 1) {
   const dx = x - P.cx, dy = y - P.cy;
   const d = Math.hypot(dx, dy);
-  if (d < 1e-6) return [x, P.cy + bend];
-  // Soft-min: floors anything near the centre just outside the photon ring,
-  // and leaves the outer disk almost untouched. A plain hypot would inflate the
-  // whole disk into an almond.
+  if (d < 1e-6) return [x, P.cy + bend * w];
+  if (w <= 0) return [x, y];
+  // Soft-min: floors anything near the centre just outside the photon ring and
+  // leaves the outer disk almost untouched. A plain hypot inflates it into an almond.
   const k = Math.pow(Math.pow(d, P.bendM) + Math.pow(bend, P.bendM), 1 / P.bendM) / d;
-  return [P.cx + dx * k, P.cy + dy * k];
+  const kw = 1 + (k - 1) * w;
+  return [P.cx + dx * kw, P.cy + dy * kw];
 }
+
+// Zero at the disk's lateral extremes, one directly behind the hole. Keeps the
+// near and far halves meeting without a kink.
+const bendWeight = (sin) => (sin >= 0 ? 0 : Math.pow(-sin, 0.7));
 
 function project(o, th) {
   const rr = radiusAt(o, th);
   const sin = Math.sin(th);
   const y = sin >= 0
-    ? P.cy + rr * P.cosI * sin + o.lift * sin + o.z      // near side, in front
+    ? P.cy + rr * P.cosI * sin + o.lift * sin + o.z      // near side, in front — unlensed
     : P.cy - o.Ht * Math.pow(-sin, P.domeQ) - o.z * 0.5; // far side, lensed over the top
-  const [px, py] = deflect(P.cx + rr * Math.cos(th), y);
+  const [px, py] = deflect(P.cx + rr * Math.cos(th), y, bendWeight(sin));
   return `${n(px)} ${n(py)}`;
 }
 
@@ -151,7 +160,7 @@ function underPath(o, samples) {
   for (let s = 0; s <= samples; s++) {
     const th = Math.PI + (s / samples) * Math.PI;
     const rr = radiusAt(o, th);
-    const [px, py] = deflect(P.cx + rr * Math.cos(th), P.cy + o.Hb * Math.pow(-Math.sin(th), P.domeQ) - o.z * 0.4);
+    const [px, py] = deflect(P.cx + rr * Math.cos(th), P.cy + o.Hb * Math.pow(-Math.sin(th), P.domeQ) - o.z * 0.4, bendWeight(Math.sin(th)));
     pts.push(`${n(px)} ${n(py)}`);
   }
   return 'M' + pts.join(' ');
@@ -199,6 +208,11 @@ defs.push(`<linearGradient id="beam" gradientUnits="userSpaceOnUse" x1="${n(P.cx
     <stop offset="0.50" stop-color="${P.ink}" stop-opacity="${(P.beamMax * 0.38).toFixed(3)}"/>
     <stop offset="0.78" stop-color="${P.ink}" stop-opacity="${(P.beamMax * 0.21).toFixed(3)}"/>
     <stop offset="1" stop-color="${P.ink}" stop-opacity="${(P.beamMax * 0.20).toFixed(3)}"/>
+  </linearGradient>`);
+defs.push(`<linearGradient id="ring" gradientUnits="userSpaceOnUse" x1="${n(P.cx - P.Rsh)}" y1="0" x2="${n(P.cx + P.Rsh)}" y2="0">
+    <stop offset="0" stop-color="${P.ink}" stop-opacity="0.95"/>
+    <stop offset="0.5" stop-color="${P.ink}" stop-opacity="0.62"/>
+    <stop offset="1" stop-color="${P.ink}" stop-opacity="0.46"/>
   </linearGradient>`);
 defs.push(`<radialGradient id="halo" cx="50%" cy="50%" r="50%">
     <stop offset="0.50" stop-color="${P.ink}" stop-opacity="0.014"/>
@@ -344,7 +358,7 @@ for (let i = 0; i < 46; i++) {
   const rr = rIn * lerp(0.97, 1.22, rnd() * rnd());
   const [x, y] = deflect(P.cx + rr * Math.cos(th), Math.sin(th) >= 0
     ? P.cy + rr * P.cosI * Math.sin(th)
-    : P.cy - domeTop(rr) * Math.pow(-Math.sin(th), P.domeQ));
+    : P.cy - domeTop(rr) * Math.pow(-Math.sin(th), P.domeQ), bendWeight(Math.sin(th)));
   spot.push(`<circle cx="${n(x)}" cy="${n(y)}" r="${lerp(0.4, 1.15, rnd() * rnd()).toFixed(2)}" fill="${P.ink}" fill-opacity="${lerp(0.18, 0.72, rnd()).toFixed(3)}"/>`);
 }
 out.push(`<g>${spot.join('')}</g>`);
@@ -360,7 +374,7 @@ for (let i = 0; i < 16; i++) {
     const th = th0 + (s / 40) * span;
     const rr = r0 * (1 + warp(r0, th) + (s / 40) * lerp(0.05, 0.4, rnd() * 0.02 + 0.4));
     const sin = Math.sin(th);
-    const [wx, wy] = deflect(P.cx + rr * Math.cos(th), sin >= 0 ? P.cy + rr * P.cosI * sin : P.cy - domeTop(Math.min(rr, rOut)) * Math.pow(-sin, P.domeQ));
+    const [wx, wy] = deflect(P.cx + rr * Math.cos(th), sin >= 0 ? P.cy + rr * P.cosI * sin : P.cy - domeTop(Math.min(rr, rOut)) * Math.pow(-sin, P.domeQ), bendWeight(sin));
     pts.push(`${n(wx)} ${n(wy)}`);
   }
   wisps.push(`<path d="M${pts.join(' ')}" fill="none" stroke="url(#beam)" stroke-opacity="${lerp(0.03, 0.10, rnd()).toFixed(3)}" stroke-width="0.5" stroke-linecap="round"/>`);
@@ -368,8 +382,8 @@ for (let i = 0; i < 16; i++) {
 out.push(`<g>${wisps.join('')}</g>`);
 
 // photon ring, drawn last: it is the sharp edge of the silhouette
-out.push(`<circle cx="${P.cx}" cy="${P.cy}" r="${(P.Rsh + 1.8).toFixed(1)}" fill="none" stroke="url(#beam)" stroke-width="4.2" stroke-opacity="0.10"/>`);
-out.push(`<circle class="ph" cx="${P.cx}" cy="${P.cy}" r="${P.Rsh}" fill="none" stroke="url(#beam)" stroke-width="1.3"/>`);
+out.push(`<circle cx="${P.cx}" cy="${P.cy}" r="${(P.Rsh + 2.2).toFixed(1)}" fill="none" stroke="url(#ring)" stroke-width="5" stroke-opacity="0.16"/>`);
+out.push(`<circle class="ph" cx="${P.cx}" cy="${P.cy}" r="${P.Rsh}" fill="none" stroke="url(#ring)" stroke-width="1.7"/>`);
 
 out.push(`</svg>`);
 
