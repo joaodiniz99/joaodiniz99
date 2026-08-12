@@ -1,12 +1,6 @@
 <div align="center">
-  <img src="./assets/header.svg" width="100%" alt="João Dumas Diniz" />
-</div>
-
-<br/>
-
-<div align="left">
-  <a href="mailto:joaopbddiniz@gmail.com" title="email">
-    <img src="./assets/mail.svg" width="32" height="32" alt="email" />
+  <a href="mailto:joaopbddiniz@gmail.com" title="Email">
+    <img src="./assets/header.svg" width="100%" alt="João Dumas Diniz" />
   </a>
 </div>
 
