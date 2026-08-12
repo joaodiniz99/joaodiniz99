@@ -7,5 +7,5 @@
 <br/>
 
 <div align="center">
-  <img src="./assets/live-field.svg" width="100%" alt="Live field light cycles" />
+  <img src="./assets/live-field.svg" width="100%" alt="Live field — contribution calendar" />
 </div>
