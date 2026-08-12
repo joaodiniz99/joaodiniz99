@@ -14,20 +14,27 @@
 <br/>
 
 <div align="center">
-  <img height="160" src="https://github-readme-stats.vercel.app/api?username=joaodiniz99&show_icons=true&theme=radical&hide_border=true&bg_color=0a0a0f&title_color=4a9eff&icon_color=4aff8a&text_color=e2e2e8&ring_color=4a9eff" alt="stats" />
-  <img height="160" src="https://github-readme-stats.vercel.app/api/top-langs/?username=joaodiniz99&layout=compact&theme=radical&hide_border=true&bg_color=0a0a0f&title_color=4a9eff&text_color=e2e2e8" alt="languages" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-fast.vercel.app/api?username=joaodiniz99&amp;show_icons=true&amp;hide_border=true&amp;bg_color=0a0a0f&amp;title_color=4a9eff&amp;icon_color=4aff8a&amp;text_color=e2e2e8&amp;ring_color=4a9eff&amp;cache_seconds=1800" />
+    <img height="165" src="https://github-readme-stats-fast.vercel.app/api?username=joaodiniz99&amp;show_icons=true&amp;hide_border=true&amp;bg_color=0a0a0f&amp;title_color=4a9eff&amp;icon_color=4aff8a&amp;text_color=e2e2e8&amp;ring_color=4a9eff&amp;cache_seconds=1800" alt="GitHub stats" />
+  </picture>
+  &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-fast.vercel.app/api/top-langs/?username=joaodiniz99&amp;layout=compact&amp;hide_border=true&amp;bg_color=0a0a0f&amp;title_color=4a9eff&amp;text_color=e2e2e8&amp;cache_seconds=1800" />
+    <img height="165" src="https://github-readme-stats-fast.vercel.app/api/top-langs/?username=joaodiniz99&amp;layout=compact&amp;hide_border=true&amp;bg_color=0a0a0f&amp;title_color=4a9eff&amp;text_color=e2e2e8&amp;cache_seconds=1800" alt="Top languages" />
+  </picture>
 </div>
 
 <br/>
 
 <div align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=joaodiniz99&theme=radical&hide_border=true&background=0a0a0f&ring=4a9eff&fire=4aff8a&currStreakLabel=4a9eff" alt="streak" />
+  <img src="https://streak-stats.demolab.com?user=joaodiniz99&amp;theme=dark&amp;hide_border=true&amp;background=0A0A0F&amp;ring=4A9EFF&amp;fire=4AFF8A&amp;currStreakLabel=4A9EFF&amp;sideLabels=8888A0&amp;sideNums=E2E2E8&amp;dates=8888A0" alt="GitHub streak" />
 </div>
 
 <br/>
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/joaodiniz99/joaodiniz99/output/github-contribution-grid-snake-dark.svg" alt="snake" />
+  <img src="https://raw.githubusercontent.com/joaodiniz99/joaodiniz99/output/github-contribution-grid-snake-dark.svg" alt="Contribution snake" />
 </div>
 
 <br/>
