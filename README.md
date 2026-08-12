@@ -7,11 +7,5 @@
 <br/>
 
 <div align="center">
-  <img src="./assets/live-field.svg" width="100%" alt="Live contribution field" />
-</div>
-
-<br/>
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/joaodiniz99/joaodiniz99/output/cyber-snake.svg" width="100%" alt="Cyber contribution snake" />
+  <img src="./assets/live-field.svg" width="100%" alt="Live field light cycles" />
 </div>

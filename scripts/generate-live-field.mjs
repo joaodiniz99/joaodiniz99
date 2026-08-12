@@ -2,6 +2,7 @@
 /**
  * generate-live-field.mjs
  * Fetches joaodiniz99 contribution calendar and emits assets/live-field.svg
+ * LIVE.FIELD arena = real contribution grid + Tron light-cycle duel (SMIL).
  *
  * Auth: GITHUB_TOKEN env, or gh auth token fallback for local runs.
  */
@@ -32,6 +33,9 @@ const C = {
   high: "#e2e2e8",
   peak: "#4aff8a",
   bezel: "#1e1e28",
+  cyan: "#4ae8ff",
+  amber: "#ffa84a",
+  green: "#4aff8a",
 };
 
 const QUERY = `
@@ -185,6 +189,197 @@ function escapeXml(s) {
     .replaceAll('"', "&quot;");
 }
 
+/** Orthogonal light-cycle routes in week/day cell space (closed loops). */
+function lightCycleRoutes(nWeeks) {
+  const maxW = Math.max(8, nWeeks - 1);
+
+  // Cycle A — ice/cyan: upper corridors, left-origin duel line
+  const cyan = [
+    [1, 1], [16, 1], [16, 3], [28, 3], [28, 0], [40, 0], [40, 2],
+    [48, 2], [48, 4], [36, 4], [36, 6], [22, 6], [22, 4], [10, 4],
+    [10, 2], [1, 2], [1, 1],
+  ].map(([w, d]) => [Math.min(w, maxW), d]);
+
+  // Cycle B — amber/gold: lower/right corridors, opposing vector
+  const amber = [
+    [maxW - 1, 5], [38, 5], [38, 3], [26, 3], [26, 5], [14, 5],
+    [14, 2], [6, 2], [6, 6], [18, 6], [18, 0], [30, 0], [30, 2],
+    [42, 2], [42, 6], [maxW - 1, 6], [maxW - 1, 5],
+  ].map(([w, d]) => [Math.min(Math.max(0, w), maxW), d]);
+
+  // Cycle C — green accent: tighter mid loop (house peak color)
+  const mid = Math.floor(maxW * 0.55);
+  const green = [
+    [mid - 8, 2], [mid + 4, 2], [mid + 4, 5], [mid + 12, 5],
+    [mid + 12, 1], [mid + 2, 1], [mid + 2, 4], [mid - 8, 4],
+    [mid - 8, 2],
+  ].map(([w, d]) => [Math.min(Math.max(0, w), maxW), Math.min(6, Math.max(0, d))]);
+
+  return { cyan, amber, green };
+}
+
+function expandOrthogonal(waypoints) {
+  if (!waypoints.length) return [];
+  const out = [[waypoints[0][0], waypoints[0][1]]];
+  for (let i = 1; i < waypoints.length; i++) {
+    let [cw, cd] = out[out.length - 1];
+    const [tw, td] = waypoints[i];
+    // Prefer horizontal then vertical (classic light-cycle turn order)
+    while (cw !== tw) {
+      cw += tw > cw ? 1 : -1;
+      out.push([cw, cd]);
+    }
+    while (cd !== td) {
+      cd += td > cd ? 1 : -1;
+      out.push([cw, cd]);
+    }
+  }
+  return out;
+}
+
+function pathFromCells(cells, cellAt) {
+  const pts = cells.map(([w, d]) => cellAt(w, d));
+  if (!pts.length) return { d: "", len: 0, pts: [] };
+  let d = `M ${pts[0][0].toFixed(2)} ${pts[0][1].toFixed(2)}`;
+  let len = 0;
+  for (let i = 1; i < pts.length; i++) {
+    d += ` L ${pts[i][0].toFixed(2)} ${pts[i][1].toFixed(2)}`;
+    len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+  }
+  return { d, len, pts };
+}
+
+function buildTronGridLines({ gridLeft, gridTop, cellW, cellH, cellGap, nWeeks }) {
+  const lines = [];
+  const right = gridLeft + nWeeks * (cellW + cellGap) - cellGap;
+  const bottom = gridTop + 7 * (cellH + cellGap) - cellGap;
+
+  // Horizontal day lanes
+  for (let d = 0; d <= 7; d++) {
+    const y = gridTop + d * (cellH + cellGap) - cellGap / 2;
+    lines.push(
+      `<line x1="${gridLeft.toFixed(1)}" y1="${y.toFixed(1)}" x2="${right.toFixed(1)}" y2="${y.toFixed(1)}"/>`,
+    );
+  }
+  // Vertical week lanes (every week for dense grid feel, very faint)
+  for (let w = 0; w <= nWeeks; w++) {
+    const x = gridLeft + w * (cellW + cellGap) - cellGap / 2;
+    lines.push(
+      `<line x1="${x.toFixed(1)}" y1="${gridTop.toFixed(1)}" x2="${x.toFixed(1)}" y2="${bottom.toFixed(1)}"/>`,
+    );
+  }
+  return lines.join("\n      ");
+}
+
+function buildLightCyclesMarkup({
+  gridLeft,
+  gridTop,
+  cellW,
+  cellH,
+  cellGap,
+  nWeeks,
+}) {
+  const stepX = cellW + cellGap;
+  const stepY = cellH + cellGap;
+  const cellAt = (w, d) => [
+    gridLeft + w * stepX + cellW / 2,
+    gridTop + d * stepY + cellH / 2,
+  ];
+
+  const routes = lightCycleRoutes(nWeeks);
+  const cycles = [
+    {
+      id: "lcCyan",
+      color: C.cyan,
+      glowId: "glowCyan",
+      trailW: 3.2,
+      coreW: 1.4,
+      dur: "16s",
+      begin: "0s",
+      waypoints: routes.cyan,
+    },
+    {
+      id: "lcAmber",
+      color: C.amber,
+      glowId: "glowAmber",
+      trailW: 3.2,
+      coreW: 1.4,
+      dur: "18s",
+      begin: "0.8s",
+      waypoints: routes.amber,
+    },
+    {
+      id: "lcGreen",
+      color: C.green,
+      glowId: "glowGreen",
+      trailW: 2.4,
+      coreW: 1.1,
+      dur: "14s",
+      begin: "1.4s",
+      waypoints: routes.green,
+    },
+  ];
+
+  const built = cycles.map((c) => {
+    const cells = expandOrthogonal(c.waypoints);
+    const path = pathFromCells(cells, cellAt);
+    return { ...c, ...path, cells };
+  });
+
+  // Near-miss flash: midpoint corridor where cyan/amber corridors nearly cross
+  const near = cellAt(Math.floor(nWeeks * 0.48), 3);
+
+  const pathDefs = built
+    .map(
+      (c) =>
+        `<path id="${c.id}Path" d="${c.d}" fill="none"/>`,
+    )
+    .join("\n    ");
+
+  const trails = built
+    .map((c) => {
+      const dash = Math.max(40, c.len).toFixed(1);
+      return `<g class="trail-${c.id}">
+      <path d="${c.d}" fill="none" stroke="${c.color}" stroke-width="${c.trailW}" stroke-linecap="square" stroke-linejoin="miter" opacity="0.35" filter="url(#${c.glowId})" stroke-dasharray="${dash}" stroke-dashoffset="0">
+        <animate attributeName="stroke-dashoffset" from="${dash}" to="0" dur="${c.dur}" begin="${c.begin}" repeatCount="indefinite"/>
+      </path>
+      <path d="${c.d}" fill="none" stroke="${c.color}" stroke-width="${c.coreW}" stroke-linecap="square" stroke-linejoin="miter" opacity="0.95" stroke-dasharray="${dash}" stroke-dashoffset="0">
+        <animate attributeName="stroke-dashoffset" from="${dash}" to="0" dur="${c.dur}" begin="${c.begin}" repeatCount="indefinite"/>
+      </path>
+      <path d="${c.d}" fill="none" stroke="${c.color}" stroke-width="1.2" stroke-linecap="square" opacity="0.18" filter="url(#${c.glowId})"/>
+    </g>`;
+    })
+    .join("\n    ");
+
+  const bikes = built
+    .map((c) => {
+      return `<g>
+      <animateMotion dur="${c.dur}" begin="${c.begin}" repeatCount="indefinite" rotate="auto">
+        <mpath xlink:href="#${c.id}Path"/>
+      </animateMotion>
+      <circle r="5.5" fill="${c.color}" opacity="0.22" filter="url(#${c.glowId})"/>
+      <polygon points="7,0 -5,-3.8 -3,0 -5,3.8" fill="${c.color}"/>
+      <rect x="-7" y="-1.6" width="5" height="3.2" rx="0.6" fill="${c.color}" opacity="0.9"/>
+      <circle cx="5.2" cy="0" r="1.35" fill="#ffffff" opacity="0.95"/>
+    </g>`;
+    })
+    .join("\n    ");
+
+  return {
+    pathDefs,
+    markup: `
+  <!-- light-cycle duel layer -->
+  <g id="lightCycles" clip-path="url(#gridClip)">
+    ${trails}
+    <circle cx="${near[0].toFixed(1)}" cy="${near[1].toFixed(1)}" r="6" fill="${C.hairline}" opacity="0">
+      <animate attributeName="opacity" values="0;0;0.55;0;0;0.4;0" keyTimes="0;0.42;0.45;0.5;0.72;0.75;1" dur="16s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="3;3;9;4;3;8;3" keyTimes="0;0.42;0.45;0.5;0.72;0.75;1" dur="16s" repeatCount="indefinite"/>
+    </circle>
+    ${bikes}
+  </g>`,
+  };
+}
+
 function buildSvg({ weeks, total, currentStreak, longestStreak, generatedAt, offline }) {
   const padX = 36;
   const padTop = 48;
@@ -245,28 +440,49 @@ function buildSvg({ weeks, total, currentStreak, longestStreak, generatedAt, off
     sparkPath += `<circle cx="${last[0]}" cy="${last[1]}" r="1.8" fill="${C.peak}"/>`;
   }
 
-  const beamW = Math.max(18, cellW * 2.2);
-  const beamX0 = gridLeft - beamW;
-  const beamX1 = gridRight + 4;
   const mono =
     "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace";
   const statusLabel = offline ? "OFFLINE" : "ONLINE";
   const statusFill = offline ? C.dim : C.peak;
   const generated = generatedAt.slice(0, 10);
 
+  const tronLines = buildTronGridLines({
+    gridLeft,
+    gridTop,
+    cellW,
+    cellH,
+    cellGap,
+    nWeeks,
+  });
+
+  const { pathDefs, markup: lightCyclesMarkup } = buildLightCyclesMarkup({
+    gridLeft,
+    gridTop,
+    cellW,
+    cellH,
+    cellGap,
+    nWeeks,
+  });
+
   return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Live contribution field — ${total} contributions, current streak ${currentStreak}">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Live field light cycles — ${total} contributions, current streak ${currentStreak}">
   <defs>
-    <linearGradient id="scanGrad" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="${C.peak}" stop-opacity="0"/>
-      <stop offset="45%" stop-color="${C.peak}" stop-opacity="0.14"/>
-      <stop offset="50%" stop-color="${C.hairline}" stop-opacity="0.22"/>
-      <stop offset="55%" stop-color="${C.peak}" stop-opacity="0.14"/>
-      <stop offset="100%" stop-color="${C.peak}" stop-opacity="0"/>
-    </linearGradient>
+    <filter id="glowCyan" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="2.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowAmber" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="2.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowGreen" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
     <clipPath id="gridClip">
       <rect x="${gridLeft - 1}" y="${gridTop - 1}" width="${gridW + 2}" height="${gridH + 2}" rx="4"/>
     </clipPath>
+    ${pathDefs}
     <style>
       <![CDATA[
         .hud-title { font-family: ${mono}; font-size: 13px; font-weight: 700; fill: ${C.text}; letter-spacing: 3.2px; }
@@ -308,16 +524,13 @@ function buildSvg({ weeks, total, currentStreak, longestStreak, generatedAt, off
     ${cells.join("\n    ")}
   </g>
 
-  <g clip-path="url(#gridClip)">
-    <rect x="${beamX0}" y="${gridTop - 1}" width="${beamW.toFixed(1)}" height="${gridH + 2}" fill="url(#scanGrad)" opacity="0.95">
-      <animate attributeName="x" from="${beamX0}" to="${beamX1}" dur="9.5s" repeatCount="indefinite"/>
-    </rect>
-    <rect x="${beamX0 + beamW * 0.48}" y="${gridTop - 1}" width="1.2" height="${gridH + 2}" fill="${C.peak}" opacity="0.35">
-      <animate attributeName="x" from="${beamX0 + beamW * 0.48}" to="${beamX1 + beamW * 0.48}" dur="9.5s" repeatCount="indefinite"/>
-    </rect>
+  <!-- subtle Tron grid over cells -->
+  <g id="tronGrid" clip-path="url(#gridClip)" fill="none" stroke="${C.cyan}" stroke-opacity="0.07" stroke-width="0.5">
+    ${tronLines}
   </g>
+${lightCyclesMarkup}
 
-  <text x="36" y="${H - 16}" class="foot">&gt; contributions · public graph · regenerates daily · generated: ${escapeXml(generated)}</text>
+  <text x="36" y="${H - 16}" class="foot">&gt; light cycles · contributions · regenerates daily · generated: ${escapeXml(generated)}</text>
 
   <g opacity="0.9">
     <text x="${sparkX - 4}" y="${sparkY + sparkH - 2}" text-anchor="end" class="hud-dim" style="font-size:9px;letter-spacing:1px">12W</text>
