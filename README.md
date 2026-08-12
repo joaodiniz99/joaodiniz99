@@ -14,20 +14,11 @@
 <br/>
 
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-fast.vercel.app/api/top-langs/?username=joaodiniz99&amp;layout=compact&amp;hide_border=true&amp;bg_color=0a0a0f&amp;title_color=4a9eff&amp;text_color=e2e2e8&amp;cache_seconds=1800" />
-    <img height="165" src="https://github-readme-stats-fast.vercel.app/api/top-langs/?username=joaodiniz99&amp;layout=compact&amp;hide_border=true&amp;bg_color=0a0a0f&amp;title_color=4a9eff&amp;text_color=e2e2e8&amp;cache_seconds=1800" alt="Top languages" />
-  </picture>
+  <img src="./assets/stack-field.svg" width="100%" alt="Tech stack field — AI, SWE, TypeScript, Bun, PHP/Laravel, React, Angular, Vue, Node" />
 </div>
 
 <br/>
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/joaodiniz99/joaodiniz99/output/github-contribution-grid-snake-dark.svg" alt="Contribution snake" />
-</div>
-
-<br/>
-
-<div align="center">
-  <code>stack</code>&nbsp;&nbsp;TypeScript · PHP/Laravel · Angular · Node · AI agents
 </div>

@@ -1,0 +1,278 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="280" viewBox="0 0 1200 280" role="img" aria-label="Tech stack — floating field of tools">
+  <defs>
+    <radialGradient id="sfGlowA" cx="18%" cy="40%" r="40%">
+      <stop offset="0%" stop-color="#4a9eff" stop-opacity="0.28"/>
+      <stop offset="55%" stop-color="#4a9eff" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#4a9eff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sfGlowB" cx="82%" cy="55%" r="38%">
+      <stop offset="0%" stop-color="#4aff8a" stop-opacity="0.18"/>
+      <stop offset="60%" stop-color="#4aff8a" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#4aff8a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sfGlowC" cx="50%" cy="20%" r="32%">
+      <stop offset="0%" stop-color="#7a8aff" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#7a8aff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="nodeHalo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#4a9eff" stop-opacity="0.14"/>
+      <stop offset="70%" stop-color="#4a9eff" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#4a9eff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="sfBlur" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+    <style>
+      <![CDATA[
+        .orb-a { animation: orbA 16s ease-in-out infinite; }
+        .orb-b { animation: orbB 20s ease-in-out infinite; }
+        .orb-c { animation: orbC 13s ease-in-out infinite; }
+
+        .float-1 { animation: float1 11s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+        .float-2 { animation: float2 14s ease-in-out infinite; animation-delay: -2.1s; transform-origin: center; transform-box: fill-box; }
+        .float-3 { animation: float3 9.5s ease-in-out infinite; animation-delay: -4.4s; transform-origin: center; transform-box: fill-box; }
+        .float-4 { animation: float4 16s ease-in-out infinite; animation-delay: -1.2s; transform-origin: center; transform-box: fill-box; }
+        .float-5 { animation: float5 12.5s ease-in-out infinite; animation-delay: -6.8s; transform-origin: center; transform-box: fill-box; }
+        .float-6 { animation: float6 10s ease-in-out infinite; animation-delay: -3.3s; transform-origin: center; transform-box: fill-box; }
+        .float-7 { animation: float7 15s ease-in-out infinite; animation-delay: -7.5s; transform-origin: center; transform-box: fill-box; }
+        .float-8 { animation: float8 13s ease-in-out infinite; animation-delay: -0.8s; transform-origin: center; transform-box: fill-box; }
+        .float-9 { animation: float9 17s ease-in-out infinite; animation-delay: -5.2s; transform-origin: center; transform-box: fill-box; }
+
+        .pulse-soft { animation: pulseSoft 3.6s ease-in-out infinite; }
+        .pulse-soft-d2 { animation: pulseSoft 4.2s ease-in-out infinite; animation-delay: -1.4s; }
+        .pulse-soft-d3 { animation: pulseSoft 3.1s ease-in-out infinite; animation-delay: -2.2s; }
+
+        .react-spin { animation: reactSpin 18s linear infinite; transform-origin: 24px 24px; }
+        .spark { animation: sparkle 2.8s ease-in-out infinite; }
+
+        @keyframes orbA {
+          0%, 100% { transform: translate(0, 0); opacity: 1; }
+          50% { transform: translate(36px, 14px); opacity: 0.82; }
+        }
+        @keyframes orbB {
+          0%, 100% { transform: translate(0, 0); opacity: 1; }
+          50% { transform: translate(-30px, -12px); opacity: 0.78; }
+        }
+        @keyframes orbC {
+          0%, 100% { transform: translate(0, 0); }
+          50% { transform: translate(14px, 22px); }
+        }
+
+        @keyframes float1 {
+          0%, 100% { transform: translate(0, 0) rotate(-2deg); }
+          33% { transform: translate(18px, -16px) rotate(3deg); }
+          66% { transform: translate(-10px, 12px) rotate(-4deg); }
+        }
+        @keyframes float2 {
+          0%, 100% { transform: translate(0, 0) rotate(1deg); }
+          40% { transform: translate(-22px, 10px) rotate(-3deg); }
+          75% { transform: translate(14px, -18px) rotate(4deg); }
+        }
+        @keyframes float3 {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          50% { transform: translate(12px, 20px) rotate(-5deg); }
+        }
+        @keyframes float4 {
+          0%, 100% { transform: translate(0, 0) rotate(2deg); }
+          30% { transform: translate(24px, 8px) rotate(-2deg); }
+          70% { transform: translate(-16px, -14px) rotate(5deg); }
+        }
+        @keyframes float5 {
+          0%, 100% { transform: translate(0, 0) rotate(-1deg); }
+          45% { transform: translate(-14px, -20px) rotate(3deg); }
+          80% { transform: translate(20px, 6px) rotate(-3deg); }
+        }
+        @keyframes float6 {
+          0%, 100% { transform: translate(0, 0) rotate(3deg); }
+          50% { transform: translate(-18px, 16px) rotate(-4deg); }
+        }
+        @keyframes float7 {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          25% { transform: translate(16px, -10px) rotate(4deg); }
+          60% { transform: translate(-20px, 14px) rotate(-2deg); }
+          85% { transform: translate(8px, 18px) rotate(2deg); }
+        }
+        @keyframes float8 {
+          0%, 100% { transform: translate(0, 0) rotate(-3deg); }
+          50% { transform: translate(22px, -8px) rotate(3deg); }
+        }
+        @keyframes float9 {
+          0%, 100% { transform: translate(0, 0) rotate(1deg); }
+          35% { transform: translate(-12px, 18px) rotate(-4deg); }
+          70% { transform: translate(18px, -12px) rotate(3deg); }
+        }
+
+        @keyframes pulseSoft {
+          0%, 100% { opacity: 0.88; }
+          50% { opacity: 1; }
+        }
+        @keyframes reactSpin {
+          to { transform: rotate(360deg); }
+        }
+        @keyframes sparkle {
+          0%, 100% { opacity: 0.55; transform: scale(0.92); }
+          50% { opacity: 1; transform: scale(1.08); }
+        }
+      ]]>
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="280" fill="#0a0a0f"/>
+
+  <!-- Soft drifting glows -->
+  <g filter="url(#sfBlur)">
+    <circle class="orb-a" cx="220" cy="110" r="140" fill="url(#sfGlowA)"/>
+    <circle class="orb-b" cx="960" cy="170" r="130" fill="url(#sfGlowB)"/>
+    <circle class="orb-c" cx="600" cy="50" r="100" fill="url(#sfGlowC)"/>
+  </g>
+
+  <!-- Faint constellation dust -->
+  <g opacity="0.4" fill="#4a9eff">
+    <circle cx="90" cy="40" r="1.4"/>
+    <circle cx="340" cy="250" r="1.2"/>
+    <circle cx="560" cy="30" r="1.5"/>
+    <circle cx="740" cy="250" r="1.3"/>
+    <circle cx="1120" cy="50" r="1.4"/>
+    <circle cx="180" cy="240" r="1.1"/>
+  </g>
+  <g opacity="0.3" fill="#4aff8a">
+    <circle cx="430" cy="40" r="1.2"/>
+    <circle cx="860" cy="40" r="1.3"/>
+    <circle cx="1000" cy="240" r="1.1"/>
+  </g>
+
+  <!-- Accent hairlines -->
+  <line x1="0" y1="1" x2="1200" y2="1" stroke="#4a9eff" stroke-opacity="0.12" stroke-width="2"/>
+  <line x1="0" y1="279" x2="1200" y2="279" stroke="#4aff8a" stroke-opacity="0.08" stroke-width="2"/>
+
+  <!-- ========== FLOATING NODES ========== -->
+
+  <!-- 1. AI — top-left -->
+  <g class="float-1 pulse-soft" transform="translate(70, 48)" filter="url(#softShadow)">
+    <circle cx="36" cy="32" r="42" fill="url(#nodeHalo)"/>
+    <rect x="8" y="4" width="56" height="56" rx="16" fill="#12121a" stroke="#4aff8a" stroke-opacity="0.4" stroke-width="1.2"/>
+    <!-- neural spark -->
+    <g transform="translate(20, 16)">
+      <circle class="spark" cx="14" cy="14" r="3.2" fill="#4aff8a"/>
+      <circle cx="4" cy="6" r="2" fill="#4a9eff" opacity="0.9"/>
+      <circle cx="24" cy="5" r="2" fill="#7a8aff" opacity="0.9"/>
+      <circle cx="3" cy="24" r="2" fill="#7a8aff" opacity="0.85"/>
+      <circle cx="25" cy="23" r="2" fill="#4a9eff" opacity="0.9"/>
+      <path d="M4 6 L14 14 L24 5 M3 24 L14 14 L25 23" fill="none" stroke="#4aff8a" stroke-opacity="0.55" stroke-width="1.2"/>
+      <path d="M14 2 L14.8 5.2 L18 6 L14.8 6.8 L14 10 L13.2 6.8 L10 6 L13.2 5.2 Z" fill="#4aff8a" opacity="0.9"/>
+    </g>
+    <text x="36" y="74" text-anchor="middle" fill="#9aa0b4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.5">AI</text>
+  </g>
+
+  <!-- 2. TypeScript -->
+  <g class="float-2 pulse-soft-d2" transform="translate(200, 150)" filter="url(#softShadow)">
+    <circle cx="36" cy="32" r="42" fill="url(#nodeHalo)"/>
+    <rect x="10" y="6" width="52" height="52" rx="12" fill="#1a2744" stroke="#4a9eff" stroke-opacity="0.55" stroke-width="1.2"/>
+    <rect x="14" y="10" width="44" height="44" rx="8" fill="#4a9eff"/>
+    <text x="36" y="40" text-anchor="middle" fill="#0a0a0f" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="18" font-weight="800" letter-spacing="-0.5">TS</text>
+    <text x="36" y="74" text-anchor="middle" fill="#9aa0b4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="0.5">TypeScript</text>
+  </g>
+
+  <!-- 3. React -->
+  <g class="float-3 pulse-soft-d3" transform="translate(340, 36)" filter="url(#softShadow)">
+    <circle cx="36" cy="32" r="42" fill="url(#nodeHalo)"/>
+    <rect x="8" y="4" width="56" height="56" rx="16" fill="#12121a" stroke="#4a9eff" stroke-opacity="0.4" stroke-width="1.2"/>
+    <g transform="translate(12, 8)">
+      <g class="react-spin">
+        <ellipse cx="24" cy="24" rx="18" ry="7" fill="none" stroke="#4a9eff" stroke-width="1.6"/>
+        <ellipse cx="24" cy="24" rx="18" ry="7" fill="none" stroke="#4a9eff" stroke-width="1.6" transform="rotate(60 24 24)"/>
+        <ellipse cx="24" cy="24" rx="18" ry="7" fill="none" stroke="#4a9eff" stroke-width="1.6" transform="rotate(120 24 24)"/>
+      </g>
+      <circle cx="24" cy="24" r="3.2" fill="#4a9eff"/>
+    </g>
+    <text x="36" y="74" text-anchor="middle" fill="#9aa0b4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1">React</text>
+  </g>
+
+  <!-- 4. Vue -->
+  <g class="float-4 pulse-soft" transform="translate(500, 140)" filter="url(#softShadow)">
+    <circle cx="36" cy="32" r="42" fill="url(#nodeHalo)"/>
+    <rect x="8" y="4" width="56" height="56" rx="16" fill="#12121a" stroke="#4aff8a" stroke-opacity="0.35" stroke-width="1.2"/>
+    <!-- Vue chevron -->
+    <g transform="translate(16, 14)">
+      <path d="M20 4 L36 36 H28 L20 20 L12 36 H4 Z" fill="#4aff8a" opacity="0.95"/>
+      <path d="M20 12 L28 30 H24 L20 22 L16 30 H12 Z" fill="#0a0a0f"/>
+    </g>
+    <text x="36" y="74" text-anchor="middle" fill="#9aa0b4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.5">Vue</text>
+  </g>
+
+  <!-- 5. Angular -->
+  <g class="float-5 pulse-soft-d2" transform="translate(620, 42)" filter="url(#softShadow)">
+    <circle cx="36" cy="32" r="42" fill="url(#nodeHalo)"/>
+    <rect x="8" y="4" width="56" height="56" rx="16" fill="#12121a" stroke="#7a8aff" stroke-opacity="0.45" stroke-width="1.2"/>
+    <!-- Angular shield -->
+    <g transform="translate(16, 12)">
+      <path d="M20 2 L38 8 L34 34 L20 42 L6 34 L2 8 Z" fill="#7a8aff"/>
+      <path d="M20 8 L32 12 L29 30 L20 36 L11 30 L8 12 Z" fill="#12121a" opacity="0.35"/>
+      <path d="M14 28 L20 12 L26 28 H22.5 L20 20 L17.5 28 Z" fill="#e8eaf0"/>
+    </g>
+    <text x="36" y="74" text-anchor="middle" fill="#9aa0b4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="0.5">Angular</text>
+  </g>
+
+  <!-- 6. Node -->
+  <g class="float-6 pulse-soft-d3" transform="translate(770, 148)" filter="url(#softShadow)">
+    <circle cx="36" cy="32" r="42" fill="url(#nodeHalo)"/>
+    <rect x="8" y="4" width="56" height="56" rx="16" fill="#12121a" stroke="#4aff8a" stroke-opacity="0.4" stroke-width="1.2"/>
+    <!-- hexagon -->
+    <g transform="translate(16, 12)">
+      <path d="M20 2 L36 11 V29 L20 38 L4 29 V11 Z" fill="none" stroke="#4aff8a" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M20 8 L30 14 V26 L20 32 L10 26 V14 Z" fill="#4aff8a" opacity="0.15"/>
+      <text x="20" y="24" text-anchor="middle" fill="#4aff8a" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="700">js</text>
+    </g>
+    <text x="36" y="74" text-anchor="middle" fill="#9aa0b4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1">Node</text>
+  </g>
+
+  <!-- 7. Bun -->
+  <g class="float-7 pulse-soft" transform="translate(900, 38)" filter="url(#softShadow)">
+    <circle cx="36" cy="32" r="42" fill="url(#nodeHalo)"/>
+    <rect x="8" y="4" width="56" height="56" rx="16" fill="#12121a" stroke="#e2c48a" stroke-opacity="0.4" stroke-width="1.2"/>
+    <!-- bun face -->
+    <g transform="translate(14, 12)">
+      <ellipse cx="22" cy="20" rx="18" ry="16" fill="#e2c48a"/>
+      <ellipse cx="22" cy="18" rx="14" ry="11" fill="#f0d9a8"/>
+      <circle cx="15" cy="18" r="2.2" fill="#0a0a0f"/>
+      <circle cx="29" cy="18" r="2.2" fill="#0a0a0f"/>
+      <path d="M17 24 Q22 28 27 24" fill="none" stroke="#0a0a0f" stroke-width="1.6" stroke-linecap="round"/>
+      <!-- steam -->
+      <path d="M12 6 Q14 2 16 6" fill="none" stroke="#e2c48a" stroke-opacity="0.7" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M20 4 Q22 0 24 4" fill="none" stroke="#e2c48a" stroke-opacity="0.7" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M28 6 Q30 2 32 6" fill="none" stroke="#e2c48a" stroke-opacity="0.7" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+    <text x="36" y="74" text-anchor="middle" fill="#9aa0b4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.5">Bun</text>
+  </g>
+
+  <!-- 8. PHP / Laravel -->
+  <g class="float-8 pulse-soft-d2" transform="translate(1040, 145)" filter="url(#softShadow)">
+    <circle cx="36" cy="32" r="42" fill="url(#nodeHalo)"/>
+    <rect x="8" y="4" width="56" height="56" rx="16" fill="#12121a" stroke="#7a8aff" stroke-opacity="0.4" stroke-width="1.2"/>
+    <!-- php pill + small Laravel diamond -->
+    <g transform="translate(10, 16)">
+      <rect x="2" y="6" width="36" height="20" rx="10" fill="#7a8aff"/>
+      <text x="20" y="20" text-anchor="middle" fill="#0a0a0f" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="800" font-style="italic">php</text>
+      <path d="M44 4 L52 12 L44 20 L36 12 Z" fill="#ff6b6b" opacity="0.9"/>
+      <path d="M44 8 L48 12 L44 16 L40 12 Z" fill="#12121a" opacity="0.35"/>
+    </g>
+    <text x="36" y="74" text-anchor="middle" fill="#9aa0b4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="0.3">PHP/Laravel</text>
+  </g>
+
+  <!-- 9. SWE — bottom-center-ish -->
+  <g class="float-9 pulse-soft-d3" transform="translate(380, 195)" filter="url(#softShadow)">
+    <circle cx="36" cy="32" r="42" fill="url(#nodeHalo)"/>
+    <rect x="8" y="4" width="56" height="56" rx="16" fill="#12121a" stroke="#4a9eff" stroke-opacity="0.4" stroke-width="1.2"/>
+    <!-- </> brackets -->
+    <g transform="translate(12, 14)">
+      <path d="M16 6 L6 20 L16 34" fill="none" stroke="#4a9eff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M32 6 L42 20 L32 34" fill="none" stroke="#4aff8a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28 8 L20 32" fill="none" stroke="#7a8aff" stroke-width="2.4" stroke-linecap="round"/>
+    </g>
+    <text x="36" y="74" text-anchor="middle" fill="#9aa0b4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.5">SWE</text>
+  </g>
+</svg>
