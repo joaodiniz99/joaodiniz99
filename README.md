@@ -7,5 +7,5 @@
 <br/>
 
 <div align="center">
-  <img src="./assets/live-field.svg" width="100%" alt="Live field — contribution calendar" />
+  <img src="./assets/black-hole.svg" width="100%" alt="Dot-style black hole" />
 </div>
