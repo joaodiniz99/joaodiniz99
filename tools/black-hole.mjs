@@ -22,7 +22,9 @@ const P = {
   rOutMul: 6.30,
   cosI: 0.255,              // disk inclination (~75 deg from face-on)
   domeQ: 0.86,              // shape of the lensed over-the-top arc
-  domeGain: 3.05,           // how fast the halo climbs with radius
+  domeGain: 2.90,           // how fast the halo climbs with radius
+  bendK: 1.04,              // deflection floor, in units of the shadow radius
+  bendM: 4,                 // how sharply the deflection falls off with distance
   falloff: 0.78,            // radial brightness decay
   scaleH: 0.028,            // disk thickness as a fraction of orbital radius
   ink: '#e2e2e8',
@@ -78,8 +80,8 @@ const planeLift = (r) => 11 * P.turb * Math.sin(2.1 * Math.log(r / rIn) + warpPh
 
 // Apparent height of the lensed far side. Converges toward the photon ring as
 // r grows, which is why outer orbits crowd into a bright halo band.
-const domeTop = (a) => P.Rsh * 1.03 + Math.pow(a - rIn, 0.58) * P.domeGain;
-const domeBot = (a) => P.Rsh * 1.05 + Math.pow(a - rIn, 0.50) * P.domeGain * 0.72;
+const domeTop = (a) => P.Rsh * 0.95 + Math.pow(a - rIn, 0.58) * P.domeGain;
+const domeBot = (a) => P.Rsh * 0.72 + Math.pow(a - rIn, 0.50) * P.domeGain * 0.72;
 
 // Orbits are ellipses, not circles, and their pericentres precess with radius.
 // That shear is what turns a stack of rings into interleaved streams.
@@ -110,13 +112,30 @@ const radiusAt = (o, th) => {
   return kep * (1 + warp(o.a, th));
 };
 
+// Light passing close to the hole is deflected outward, so nothing is ever seen
+// inside the photon ring. Pushing every apparent point radially away from the
+// centre is what makes the near side of the disk skirt the lower limb instead
+// of cutting straight across it, and it keeps the silhouette a full circle.
+const bend = P.Rsh * P.bendK;
+function deflect(x, y) {
+  const dx = x - P.cx, dy = y - P.cy;
+  const d = Math.hypot(dx, dy);
+  if (d < 1e-6) return [x, P.cy + bend];
+  // Soft-min: floors anything near the centre just outside the photon ring,
+  // and leaves the outer disk almost untouched. A plain hypot would inflate the
+  // whole disk into an almond.
+  const k = Math.pow(Math.pow(d, P.bendM) + Math.pow(bend, P.bendM), 1 / P.bendM) / d;
+  return [P.cx + dx * k, P.cy + dy * k];
+}
+
 function project(o, th) {
   const rr = radiusAt(o, th);
   const sin = Math.sin(th);
   const y = sin >= 0
     ? P.cy + rr * P.cosI * sin + o.lift * sin + o.z      // near side, in front
     : P.cy - o.Ht * Math.pow(-sin, P.domeQ) - o.z * 0.5; // far side, lensed over the top
-  return `${n(P.cx + rr * Math.cos(th))} ${n(y)}`;
+  const [px, py] = deflect(P.cx + rr * Math.cos(th), y);
+  return `${n(px)} ${n(py)}`;
 }
 
 function ringPath(o, samples) {
@@ -132,7 +151,8 @@ function underPath(o, samples) {
   for (let s = 0; s <= samples; s++) {
     const th = Math.PI + (s / samples) * Math.PI;
     const rr = radiusAt(o, th);
-    pts.push(`${n(P.cx + rr * Math.cos(th))} ${n(P.cy + o.Hb * Math.pow(-Math.sin(th), P.domeQ) - o.z * 0.4)}`);
+    const [px, py] = deflect(P.cx + rr * Math.cos(th), P.cy + o.Hb * Math.pow(-Math.sin(th), P.domeQ) - o.z * 0.4);
+    pts.push(`${n(px)} ${n(py)}`);
   }
   return 'M' + pts.join(' ');
 }
@@ -296,10 +316,9 @@ const spot = [];
 for (let i = 0; i < 46; i++) {
   const th = Math.PI * (0.72 + rnd() * 0.56);
   const rr = rIn * lerp(0.97, 1.22, rnd() * rnd());
-  const x = P.cx + rr * Math.cos(th);
-  const y = Math.sin(th) >= 0
+  const [x, y] = deflect(P.cx + rr * Math.cos(th), Math.sin(th) >= 0
     ? P.cy + rr * P.cosI * Math.sin(th)
-    : P.cy - domeTop(rr) * Math.pow(-Math.sin(th), P.domeQ);
+    : P.cy - domeTop(rr) * Math.pow(-Math.sin(th), P.domeQ));
   spot.push(`<circle cx="${n(x)}" cy="${n(y)}" r="${lerp(0.4, 1.15, rnd() * rnd()).toFixed(2)}" fill="${P.ink}" fill-opacity="${lerp(0.18, 0.72, rnd()).toFixed(3)}"/>`);
 }
 out.push(`<g>${spot.join('')}</g>`);
@@ -315,8 +334,8 @@ for (let i = 0; i < 16; i++) {
     const th = th0 + (s / 40) * span;
     const rr = r0 * (1 + warp(r0, th) + (s / 40) * lerp(0.05, 0.4, rnd() * 0.02 + 0.4));
     const sin = Math.sin(th);
-    const y = sin >= 0 ? P.cy + rr * P.cosI * sin : P.cy - domeTop(Math.min(rr, rOut)) * Math.pow(-sin, P.domeQ);
-    pts.push(`${n(P.cx + rr * Math.cos(th))} ${n(y)}`);
+    const [wx, wy] = deflect(P.cx + rr * Math.cos(th), sin >= 0 ? P.cy + rr * P.cosI * sin : P.cy - domeTop(Math.min(rr, rOut)) * Math.pow(-sin, P.domeQ));
+    pts.push(`${n(wx)} ${n(wy)}`);
   }
   wisps.push(`<path d="M${pts.join(' ')}" fill="none" stroke="url(#beam)" stroke-opacity="${lerp(0.03, 0.10, rnd()).toFixed(3)}" stroke-width="0.5" stroke-linecap="round"/>`);
 }
