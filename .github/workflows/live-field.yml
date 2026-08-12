@@ -10,6 +10,10 @@ on:
       - "scripts/generate-live-field.mjs"
       - ".github/workflows/live-field.yml"
 
+concurrency:
+  group: live-field
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -19,6 +23,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Bot commits must be able to push back to main
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -40,4 +47,12 @@ jobs:
             exit 0
           fi
           git commit -m "chore: refresh live contribution field"
-          git push
+          # Race-safe push: rebase onto latest main and retry once
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push rejected (attempt $i) — rebasing and retrying"
+            git pull --rebase origin main
+          done
+          exit 1
