@@ -7,5 +7,5 @@
 <br/>
 
 <div align="center">
-  <img src="./assets/agent-arcade.svg" width="100%" alt="Agent arcade" />
+  <img src="./assets/live-field.svg" width="100%" alt="Live contribution field" />
 </div>
