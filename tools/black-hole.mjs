@@ -18,11 +18,11 @@ const P = {
   W: 1200, H: 460,
   cx: 600, cy: 250,
   Rsh: 70,                  // shadow / photon-ring radius
-  rInMul: 1.42,             // ISCO as a multiple of Rsh
+  rInMul: 1.30,             // ISCO as a multiple of Rsh
   rOutMul: 6.30,
   cosI: 0.255,              // disk inclination (~75 deg from face-on)
   domeQ: 0.86,              // shape of the lensed over-the-top arc
-  domeGain: 2.90,           // how fast the halo climbs with radius
+  domeGain: 4.80,           // how fast the halo climbs with radius
   bendK: 1.04,              // deflection floor, in units of the shadow radius
   bendM: 4,                 // how sharply the deflection falls off with distance
   falloff: 0.78,            // radial brightness decay
@@ -60,7 +60,7 @@ const rOut = P.Rsh * P.rOutMul;
 // neighbouring orbits bend together into arms instead of wobbling on their own.
 const FIELD = Array.from({ length: 5 }, (_, j) => ({
   k: j + 1,
-  a: 0.055 / (j * 0.8 + 1),
+  a: 0.020 / (j * 0.8 + 1),
   phase: rnd() * Math.PI * 2,
   shear: lerp(1.6, 7.0, rnd()) * (rnd() < 0.5 ? -1 : 1),
 }));
@@ -69,19 +69,19 @@ function warp(r, th) {
   const L = Math.log(r / rIn);
   let s = 0;
   for (const h of FIELD) s += h.a * Math.sin(h.k * th + h.phase + h.shear * L);
-  return s * P.turb * Math.pow(r / rIn, 0.55);
+  return s * P.turb * Math.pow(r / rIn, 0.35);
 }
 
 // Disk plane is not flat: it tilts slowly with radius, like a warped disk.
 const warpPhase = rnd() * Math.PI * 2;
-const planeLift = (r) => 11 * P.turb * Math.sin(2.1 * Math.log(r / rIn) + warpPhase);
+const planeLift = (r) => 6 * P.turb * Math.sin(2.1 * Math.log(r / rIn) + warpPhase);
 
 // -------------------------------------------------------------- ring geometry
 
 // Apparent height of the lensed far side. Converges toward the photon ring as
 // r grows, which is why outer orbits crowd into a bright halo band.
-const domeTop = (a) => P.Rsh * 0.95 + Math.pow(a - rIn, 0.58) * P.domeGain;
-const domeBot = (a) => P.Rsh * 0.72 + Math.pow(a - rIn, 0.50) * P.domeGain * 0.72;
+const domeTop = (a) => P.Rsh * 0.25 + Math.pow(a - rIn, 0.58) * P.domeGain;
+const domeBot = (a) => P.Rsh * 0.25 + Math.pow(a - rIn, 0.50) * P.domeGain * 0.72;
 
 // Orbits are ellipses, not circles, and their pericentres precess with radius.
 // That shear is what turns a stack of rings into interleaved streams.
@@ -94,7 +94,7 @@ function orbit(a) {
   const full = rnd() < 0.34;
   return {
     a,
-    e: lerp(0.02, 0.30, Math.pow(t, 0.7)) * lerp(0.35, 1, rnd()),
+    e: lerp(0.02, 0.16, Math.pow(t, 0.7)) * lerp(0.35, 1, rnd()),
     w: precess + 2.4 * Math.log(a / rIn) + lerp(-0.25, 0.25, rnd()),
     z: gauss() * (P.scaleH * a + 2.5),          // vertical offset within the disk thickness
     lift: planeLift(a),
@@ -139,7 +139,7 @@ function project(o, th) {
 }
 
 function ringPath(o, samples) {
-  const steps = o.full ? samples : Math.max(14, Math.round((samples * o.span) / (Math.PI * 2)) + 4);
+  const steps = o.full ? samples : Math.max(22, Math.round((samples * o.span) / (Math.PI * 2)) + 4);
   const pts = [];
   for (let s = 0; s <= steps; s++) pts.push(project(o, o.start + (s / steps) * o.span));
   return 'M' + pts.join(' ') + (o.full ? 'Z' : '');
@@ -310,6 +310,32 @@ for (let k = 0; k < 18; k++) {
   rim.push(`<path class="fl d${db} s${k % 3}" d="${d}" pathLength="100" fill="none" stroke="url(#beam)" stroke-opacity="${(P.opBase * lerp(0.5, 1.5, rnd())).toFixed(3)}" stroke-width="${(P.wIn * lerp(0.8, 1.3, rnd())).toFixed(2)}" stroke-dasharray="${on.toFixed(2)} ${(seg - on).toFixed(2)}" stroke-dashoffset="${(rnd() * 100).toFixed(2)}" stroke-linecap="round"/>`);
 }
 out.push(`<g>${rim.join('')}</g>`);
+
+// Secondary image: light that looped the hole once before reaching us. It piles
+// into a thin band hugging the photon ring at every angle, which is what fills
+// the annulus where the disk is seen edge-on.
+const halo2 = [];
+for (let k = 0; k < 22; k++) {
+  const rr = P.Rsh * lerp(1.035, 1.34, Math.pow(rnd(), 1.5));
+  const wob = 0.012 + 0.026 * rnd();
+  const ph1 = rnd() * Math.PI * 2, ph2 = rnd() * Math.PI * 2;
+  const start = rnd() * Math.PI * 2;
+  const span = Math.PI * lerp(0.6, 2, rnd());
+  const steps = Math.max(30, Math.round((90 * span) / (Math.PI * 2)));
+  const pts = [];
+  for (let s = 0; s <= steps; s++) {
+    const th = start + (s / steps) * span;
+    const rad = rr * (1 + wob * Math.sin(2 * th + ph1) + wob * 0.6 * Math.sin(3 * th + ph2));
+    pts.push(`${n(P.cx + rad * Math.cos(th))} ${n(P.cy + rad * Math.sin(th) * 0.985)}`);
+  }
+  const d = 'M' + pts.join(' ');
+  const db = dashBucket(pathLength(d));
+  const seg = 100 / DASH_BUCKETS[db];
+  const on = seg * lerp(0.30, 0.78, rnd());
+  const fade = Math.pow(P.Rsh * 1.34 / rr, 1.6);
+  halo2.push(`<path class="fl d${db} s${k % 4}" d="${d}" pathLength="100" fill="none" stroke="url(#beam)" stroke-opacity="${clamp(P.opBase * 0.85 * fade * lerp(0.6, 1.4, rnd()), 0.02, 0.9).toFixed(3)}" stroke-width="${(P.wIn * lerp(0.55, 0.95, rnd())).toFixed(2)}" stroke-dasharray="${on.toFixed(2)} ${(seg - on).toFixed(2)}" stroke-dashoffset="${(rnd() * 100).toFixed(2)}" stroke-linecap="round"/>`);
+}
+out.push(`<g>${halo2.join('')}</g>`);
 
 // inner hot spot — the fast, bright material at the ISCO on the approaching side
 const spot = [];
