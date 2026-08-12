@@ -6,7 +6,6 @@
 
 <div align="center">
 
-[![GitHub](https://img.shields.io/badge/joaodiniz99-0a0a0f?style=for-the-badge&logo=github&logoColor=e2e2e8)](https://github.com/joaodiniz99)
 [![Email](https://img.shields.io/badge/mail-e2e2e8?style=for-the-badge&logo=gmail&logoColor=0a0a0f)](mailto:joaopbddiniz@gmail.com)
 
 </div>

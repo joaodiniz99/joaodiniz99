@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-label="João Dumas Diniz — LIVE · BUILDING">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-label="João Dumas Diniz — SWE · agents · systems that stay sharp">
   <defs>
     <style>
       <![CDATA[
         .pulse-dot { animation: pulse 2.2s ease-in-out infinite; }
-        .pulse-ring { animation: ring 2.2s ease-in-out infinite; transform-origin: 90px 252px; }
+        .pulse-ring { animation: ring 2.2s ease-in-out infinite; transform-origin: 96px 232px; }
         @keyframes pulse {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.5; }
@@ -42,59 +42,46 @@
   <line x1="0" y1="1" x2="1200" y2="1" stroke="#e2e2e8" stroke-opacity="0.08" stroke-width="2"/>
   <line x1="0" y1="319" x2="1200" y2="319" stroke="#e2e2e8" stroke-opacity="0.06" stroke-width="2"/>
 
-  <!-- Identity (left) -->
-  <text x="72" y="88" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="14" letter-spacing="4" font-weight="600">LIVE · BUILDING</text>
+  <!-- Identity (left) — single status via chip; no LIVE · BUILDING -->
+  <text x="72" y="132" fill="#e2e2e8" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="46" font-weight="700" letter-spacing="-0.5">João Dumas Diniz</text>
 
-  <text x="72" y="152" fill="#e2e2e8" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="46" font-weight="700" letter-spacing="-0.5">João Dumas Diniz</text>
+  <text x="72" y="176" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="15" letter-spacing="1.1">SWE  ·  agents  ·  systems that stay sharp</text>
 
-  <text x="72" y="196" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="15" letter-spacing="1.1">full-stack  ·  agents  ·  systems that stay sharp</text>
-
-  <!-- Status chip (under tagline, monochrome) -->
+  <!-- Status chip (only status indicator) -->
   <g>
-    <rect x="72" y="232" width="212" height="40" rx="20" fill="#12121a" stroke="#5a5a70" stroke-opacity="0.7" stroke-width="1"/>
-    <circle class="pulse-ring" cx="96" cy="252" r="8" fill="none" stroke="#e2e2e8" stroke-opacity="0.45" stroke-width="1.4"/>
-    <circle class="pulse-dot" cx="96" cy="252" r="4.2" fill="#e2e2e8"/>
-    <text x="116" y="257" fill="#c8c8d4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13" letter-spacing="0.8">online · shipping</text>
+    <rect x="72" y="212" width="212" height="40" rx="20" fill="#12121a" stroke="#5a5a70" stroke-opacity="0.7" stroke-width="1"/>
+    <circle class="pulse-ring" cx="96" cy="232" r="8" fill="none" stroke="#e2e2e8" stroke-opacity="0.45" stroke-width="1.4"/>
+    <circle class="pulse-dot" cx="96" cy="232" r="4.2" fill="#e2e2e8"/>
+    <text x="116" y="237" fill="#c8c8d4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13" letter-spacing="0.8">online · shipping</text>
   </g>
 
-  <!-- ========== Stack icons (right/middle — monochrome field) ========== -->
-  <!-- Palette: #e2e2e8 / #8888a0 / #5a5a70 only. Subtle SMIL float on each node. -->
+  <!-- ========== Stack icons — 10 equal tiles, 2×5 ========== -->
+  <!-- Palette: #e2e2e8 / #8888a0 / #5a5a70 only. Columns: 620 710 800 890 980 -->
 
-  <!-- Row 1 -->
-  <!-- AI -->
-  <g transform="translate(620, 42)">
+  <!-- Row 1: AI · SWE · TypeScript · Bun · PHP -->
+
+  <!-- AI — text mark -->
+  <g transform="translate(620, 36)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -5; 0 0" dur="7s" repeatCount="indefinite"/>
       <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
-      <g transform="translate(12, 12)">
-        <circle cx="14" cy="14" r="2.8" fill="#e2e2e8"/>
-        <circle cx="4" cy="5" r="1.8" fill="#8888a0"/>
-        <circle cx="24" cy="4" r="1.8" fill="#8888a0"/>
-        <circle cx="3" cy="24" r="1.8" fill="#8888a0"/>
-        <circle cx="25" cy="23" r="1.8" fill="#8888a0"/>
-        <path d="M4 5 L14 14 L24 4 M3 24 L14 14 L25 23" fill="none" stroke="#5a5a70" stroke-width="1.15"/>
-        <path d="M14 1 L14.7 4 L18 4.7 L14.7 5.4 L14 8.4 L13.3 5.4 L10 4.7 L13.3 4 Z" fill="#e2e2e8"/>
-      </g>
+      <text x="26" y="33" text-anchor="middle" fill="#e2e2e8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="17" font-weight="700" letter-spacing="1.5">AI</text>
       <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.4">AI</text>
     </g>
   </g>
 
-  <!-- SWE -->
-  <g transform="translate(720, 42)">
+  <!-- SWE — text mark -->
+  <g transform="translate(710, 36)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="8.2s" begin="0.6s" repeatCount="indefinite"/>
       <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
-      <g transform="translate(8, 11)" fill="none" stroke="#e2e2e8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 4 L5 16 L14 28"/>
-        <path d="M24 4 L33 16 L24 28"/>
-        <path d="M22 6 L16 26" stroke="#8888a0" stroke-width="2"/>
-      </g>
+      <text x="26" y="33" text-anchor="middle" fill="#e2e2e8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="14" font-weight="700" letter-spacing="0.8">SWE</text>
       <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.4">SWE</text>
     </g>
   </g>
 
-  <!-- TypeScript -->
-  <g transform="translate(820, 42)">
+  <!-- TypeScript — official badge shape -->
+  <g transform="translate(800, 36)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -4; 0 0" dur="6.5s" begin="1.1s" repeatCount="indefinite"/>
       <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
@@ -104,8 +91,8 @@
     </g>
   </g>
 
-  <!-- Bun -->
-  <g transform="translate(920, 42)">
+  <!-- Bun — simplified mono face -->
+  <g transform="translate(890, 36)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -5; 0 0" dur="7.6s" begin="0.3s" repeatCount="indefinite"/>
       <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
@@ -123,24 +110,36 @@
     </g>
   </g>
 
-  <!-- PHP/Laravel -->
-  <g transform="translate(1020, 42)">
+  <!-- PHP — official-style pill wordmark -->
+  <g transform="translate(980, 36)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="8.8s" begin="1.5s" repeatCount="indefinite"/>
       <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
-      <g transform="translate(5, 14)">
-        <rect x="0" y="4" width="30" height="18" rx="9" fill="#e2e2e8"/>
-        <text x="15" y="17" text-anchor="middle" fill="#0a0a0f" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="800" font-style="italic">php</text>
-        <path d="M36 2 L43 10 L36 18 L29 10 Z" fill="#8888a0"/>
-        <path d="M36 6 L39.5 10 L36 14 L32.5 10 Z" fill="#12121a" opacity="0.45"/>
-      </g>
-      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="9" letter-spacing="0.2">PHP/Laravel</text>
+      <rect x="7" y="16" width="38" height="20" rx="10" fill="#e2e2e8"/>
+      <text x="26" y="31" text-anchor="middle" fill="#0a0a0f" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="800" font-style="italic" letter-spacing="0.2">php</text>
+      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.4">PHP</text>
     </g>
   </g>
 
-  <!-- Row 2 -->
-  <!-- React -->
-  <g transform="translate(670, 150)">
+  <!-- Row 2: Laravel · React · Angular · Vue · Node -->
+
+  <!-- Laravel — four-bar geometric mark (mono) -->
+  <g transform="translate(620, 148)">
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 -5; 0 0" dur="7.4s" begin="0.4s" repeatCount="indefinite"/>
+      <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
+      <g transform="translate(11, 11)">
+        <path d="M2 6 L12 2 L15.5 9.5 L5.5 13.5 Z" fill="#e2e2e8"/>
+        <path d="M14 6 L24 2 L27.5 9.5 L17.5 13.5 Z" fill="#e2e2e8" opacity="0.75"/>
+        <path d="M5.5 16.5 L15.5 12.5 L19 20 L9 24 Z" fill="#8888a0"/>
+        <path d="M17.5 16.5 L27.5 12.5 L31 20 L21 24 Z" fill="#8888a0" opacity="0.75"/>
+      </g>
+      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="0.3">Laravel</text>
+    </g>
+  </g>
+
+  <!-- React — official atom -->
+  <g transform="translate(710, 148)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -5; 0 0" dur="7.3s" begin="0.9s" repeatCount="indefinite"/>
       <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
@@ -154,8 +153,8 @@
     </g>
   </g>
 
-  <!-- Angular -->
-  <g transform="translate(770, 150)">
+  <!-- Angular — official shield -->
+  <g transform="translate(800, 148)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -4; 0 0" dur="6.8s" begin="0.2s" repeatCount="indefinite"/>
       <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
@@ -168,21 +167,21 @@
     </g>
   </g>
 
-  <!-- Vue -->
-  <g transform="translate(870, 150)">
+  <!-- Vue — official V, point DOWN (correct brand orientation) -->
+  <g transform="translate(890, 148)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="8s" begin="1.3s" repeatCount="indefinite"/>
       <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
       <g transform="translate(10, 10)">
-        <path d="M16 2 L30 30 H23 L16 16 L9 30 H2 Z" fill="#e2e2e8"/>
-        <path d="M16 10 L23 26 H19.5 L16 18 L12.5 26 H9 Z" fill="#0a0a0f"/>
+        <path d="M2 2 L16 30 L30 2 H23 L16 16 L9 2 Z" fill="#e2e2e8"/>
+        <path d="M9 2 L16 18 L23 2 H19.5 L16 10 L12.5 2 Z" fill="#0a0a0f"/>
       </g>
       <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.4">Vue</text>
     </g>
   </g>
 
-  <!-- Node -->
-  <g transform="translate(970, 150)">
+  <!-- Node — official hexagon mark -->
+  <g transform="translate(980, 148)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -5; 0 0" dur="7.9s" begin="0.7s" repeatCount="indefinite"/>
       <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
