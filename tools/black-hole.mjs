@@ -7,8 +7,8 @@
 
 const PRESETS = {
   quiet: { rings: 150, opBase: 0.30, turb: 0.55, beamMax: 0.75, stars: 170, underOp: 0.32, wIn: 0.72 },
-  halo:  { rings: 210, opBase: 0.46, turb: 0.85, beamMax: 1.00, stars: 220, underOp: 0.42, wIn: 0.85 },
-  dense: { rings: 290, opBase: 0.60, turb: 1.15, beamMax: 1.00, stars: 260, underOp: 0.52, wIn: 0.95 },
+  halo:  { rings: 230, opBase: 0.50, turb: 0.85, beamMax: 1.00, stars: 220, underOp: 0.42, wIn: 0.85 },
+  dense: { rings: 270, opBase: 0.66, turb: 1.15, beamMax: 1.00, stars: 260, underOp: 0.52, wIn: 0.95 },
 };
 
 const argv = process.argv.slice(2);
@@ -24,7 +24,7 @@ const P = {
   domeQ: 0.86,              // shape of the lensed over-the-top arc
   domeGain: 3.05,           // how fast the halo climbs with radius
   falloff: 0.78,            // radial brightness decay
-  scaleH: 0.075,            // disk thickness as a fraction of orbital radius
+  scaleH: 0.028,            // disk thickness as a fraction of orbital radius
   ink: '#e2e2e8',
   bg: '#0a0a0f',
   ...PRESETS[arg('preset', 'dense')],
@@ -94,7 +94,7 @@ function orbit(a) {
     a,
     e: lerp(0.02, 0.30, Math.pow(t, 0.7)) * lerp(0.35, 1, rnd()),
     w: precess + 2.4 * Math.log(a / rIn) + lerp(-0.25, 0.25, rnd()),
-    z: gauss() * (P.scaleH * a + 7),          // vertical offset within the disk thickness
+    z: gauss() * (P.scaleH * a + 2.5),          // vertical offset within the disk thickness
     lift: planeLift(a),
     Ht: domeTop(a),
     Hb: domeBot(a),
@@ -181,7 +181,7 @@ defs.push(`<linearGradient id="beam" gradientUnits="userSpaceOnUse" x1="${n(P.cx
     <stop offset="1" stop-color="${P.ink}" stop-opacity="${(P.beamMax * 0.20).toFixed(3)}"/>
   </linearGradient>`);
 defs.push(`<radialGradient id="halo" cx="50%" cy="50%" r="50%">
-    <stop offset="0.50" stop-color="${P.ink}" stop-opacity="0.022"/>
+    <stop offset="0.50" stop-color="${P.ink}" stop-opacity="0.014"/>
     <stop offset="0.72" stop-color="${P.ink}" stop-opacity="0.009"/>
     <stop offset="1" stop-color="${P.ink}" stop-opacity="0"/>
   </radialGradient>`);
@@ -238,14 +238,12 @@ out.push(`<g>${stars.join('')}</g>`);
 // shadow + photon ring --------------------------------------------------------
 out.push(`<circle cx="${P.cx}" cy="${P.cy}" r="${(P.Rsh * 2.2).toFixed(1)}" fill="url(#halo)"/>`);
 out.push(`<circle cx="${P.cx}" cy="${P.cy}" r="${P.Rsh}" fill="#000000"/>`);
-out.push(`<circle class="ph" cx="${P.cx}" cy="${P.cy}" r="${P.Rsh}" fill="none" stroke="url(#beam)" stroke-width="1.5"/>`);
-out.push(`<circle cx="${P.cx}" cy="${P.cy}" r="${(P.Rsh + 2.6).toFixed(1)}" fill="none" stroke="url(#beam)" stroke-width="3.4" stroke-opacity="0.16"/>`);
 
 // the disk --------------------------------------------------------------------
 const disk = [];
 for (let i = 0; i < P.rings; i++) {
   const t = i / (P.rings - 1);
-  const r = rIn * Math.pow(rOut / rIn, Math.pow(t, 1.18)) * lerp(0.975, 1.025, rnd());
+  const r = rIn * Math.pow(rOut / rIn, Math.pow(t, 1.05)) * lerp(0.975, 1.025, rnd());
   const samples = Math.round(lerp(104, 72, t));
   const sc = speedClass(r);
   const o = orbit(r);
@@ -259,10 +257,11 @@ for (let i = 0; i < P.rings; i++) {
   const db = dashBucket(L);
   const count = DASH_BUCKETS[db];
   const seg = 100 / count;
-  const solid = rnd() < 0.14;
-  const on = solid ? 100 : seg * lerp(0.30, 0.86, rnd());
+  const clumpy = clamp(1 - (r - rIn) / (2.6 * P.Rsh), 0, 1);   // 1 at the ISCO, 0 further out
+  const solid = rnd() < 0.14 * (1 - clumpy);
+  const on = solid ? 100 : seg * lerp(lerp(0.30, 0.13, clumpy), lerp(0.86, 0.34, clumpy), rnd());
   const off = solid ? 0 : seg - on;
-  const op = clamp(P.opBase * bright * flare, 0.012, 0.95);
+  const op = clamp(P.opBase * bright * flare * (1 + clumpy * 0.55), 0.012, 0.95);
 
   disk.push(`<path class="fl d${db} s${sc}" d="${d}" pathLength="100" fill="none" stroke="url(#beam)" stroke-opacity="${op.toFixed(3)}" stroke-width="${w.toFixed(2)}" stroke-dasharray="${on.toFixed(3)} ${Math.max(off, 0.001).toFixed(3)}" stroke-dashoffset="${(rnd() * 100).toFixed(3)}" stroke-linecap="round"/>`);
 
@@ -279,15 +278,15 @@ out.push(`<g>${disk.join('')}</g>`);
 
 // inner rim — the hottest material, right where the disk meets the shadow
 const rim = [];
-for (let k = 0; k < 26; k++) {
-  const o = orbit(rIn * lerp(0.99, 1.20, rnd() * rnd()));
+for (let k = 0; k < 18; k++) {
+  const o = orbit(rIn * lerp(0.99, 1.62, rnd()));
   o.span = Math.PI * lerp(0.35, 1.3, rnd());
   o.start = rnd() * Math.PI * 2;
   o.full = false;
   const d = ringPath(o, 100);
   const db = dashBucket(pathLength(d));
   const seg = 100 / DASH_BUCKETS[db];
-  const on = seg * lerp(0.4, 0.9, rnd());
+  const on = seg * lerp(0.55, 0.95, rnd());
   rim.push(`<path class="fl d${db} s${k % 3}" d="${d}" pathLength="100" fill="none" stroke="url(#beam)" stroke-opacity="${(P.opBase * lerp(0.5, 1.5, rnd())).toFixed(3)}" stroke-width="${(P.wIn * lerp(0.8, 1.3, rnd())).toFixed(2)}" stroke-dasharray="${on.toFixed(2)} ${(seg - on).toFixed(2)}" stroke-dashoffset="${(rnd() * 100).toFixed(2)}" stroke-linecap="round"/>`);
 }
 out.push(`<g>${rim.join('')}</g>`);
@@ -322,6 +321,10 @@ for (let i = 0; i < 16; i++) {
   wisps.push(`<path d="M${pts.join(' ')}" fill="none" stroke="url(#beam)" stroke-opacity="${lerp(0.03, 0.10, rnd()).toFixed(3)}" stroke-width="0.5" stroke-linecap="round"/>`);
 }
 out.push(`<g>${wisps.join('')}</g>`);
+
+// photon ring, drawn last: it is the sharp edge of the silhouette
+out.push(`<circle cx="${P.cx}" cy="${P.cy}" r="${(P.Rsh + 1.8).toFixed(1)}" fill="none" stroke="url(#beam)" stroke-width="4.2" stroke-opacity="0.10"/>`);
+out.push(`<circle class="ph" cx="${P.cx}" cy="${P.cy}" r="${P.Rsh}" fill="none" stroke="url(#beam)" stroke-width="1.3"/>`);
 
 out.push(`</svg>`);
 
