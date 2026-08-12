@@ -4,10 +4,10 @@
 
 <br/>
 
-<div align="center">
-
-[![Email](https://img.shields.io/badge/mail-e2e2e8?style=for-the-badge&logo=gmail&logoColor=0a0a0f)](mailto:joaopbddiniz@gmail.com)
-
+<div align="left">
+  <a href="mailto:joaopbddiniz@gmail.com" title="email">
+    <img src="./assets/mail.svg" width="32" height="32" alt="email" />
+  </a>
 </div>
 
 <br/>

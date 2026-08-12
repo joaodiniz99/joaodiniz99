@@ -29,12 +29,19 @@
 
   <text x="72" y="176" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="15" letter-spacing="1.1">SWE  ·  agents  ·  systems that stay sharp</text>
 
-  <!-- Status chip (only status indicator) -->
+  <!-- Status chip + compact mail icon (same band, left identity) -->
   <g>
     <rect x="72" y="212" width="212" height="40" rx="20" fill="#12121a" stroke="#5a5a70" stroke-opacity="0.7" stroke-width="1"/>
     <circle class="pulse-ring" cx="96" cy="232" r="8" fill="none" stroke="#e2e2e8" stroke-opacity="0.45" stroke-width="1.4"/>
     <circle class="pulse-dot" cx="96" cy="232" r="4.2" fill="#e2e2e8"/>
     <text x="116" y="237" fill="#c8c8d4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13" letter-spacing="0.8">online · shipping</text>
+  </g>
+
+  <!-- Mail affordance — ~26px, immediately right of status chip, monochrome stroke -->
+  <g transform="translate(296, 219)" aria-label="email">
+    <rect x="0" y="0" width="26" height="26" rx="7" fill="#12121a" stroke="#5a5a70" stroke-opacity="0.7" stroke-width="1"/>
+    <rect x="5" y="7" width="16" height="12" rx="1.5" fill="none" stroke="#e2e2e8" stroke-width="1.35"/>
+    <path d="M5.5 8.5 L13 14 L20.5 8.5" fill="none" stroke="#e2e2e8" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 
   <!-- ========== Stack icons — 10 equal tiles, 2×5, icons only (no labels) ========== -->
