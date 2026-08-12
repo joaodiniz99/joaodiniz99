@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="280" viewBox="0 0 1200 280" role="img" aria-label="Live contribution field — 2925 contributions, current streak 8">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="280" viewBox="0 0 1200 280" role="img" aria-label="Live contribution field — 2922 contributions, current streak 8">
   <defs>
     <linearGradient id="scanGrad" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#4aff8a" stop-opacity="0"/>
@@ -13,11 +13,11 @@
     </clipPath>
     <style>
       <![CDATA[
-        .hud-title { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; font-weight: 700; fill: #e2e2e8; letter-spacing: 3.2px; }
-        .hud-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; fill: #8888a0; letter-spacing: 1.6px; }
-        .hud-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; fill: #e2e2e8; letter-spacing: 1.4px; }
-        .hud-dim { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; fill: #5a5a70; letter-spacing: 1.2px; }
-        .foot { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; fill: #5a5a70; letter-spacing: 0.8px; }
+        .hud-title { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace; font-size: 13px; font-weight: 700; fill: #e2e2e8; letter-spacing: 3.2px; }
+        .hud-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace; font-size: 12px; fill: #8888a0; letter-spacing: 1.6px; }
+        .hud-num { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace; font-size: 12px; fill: #e2e2e8; letter-spacing: 1.4px; }
+        .hud-dim { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace; font-size: 11px; fill: #5a5a70; letter-spacing: 1.2px; }
+        .foot { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace; font-size: 11px; fill: #5a5a70; letter-spacing: 0.8px; }
         @keyframes pulse {
           0%, 100% { opacity: 0.45; }
           50% { opacity: 1; }
@@ -35,7 +35,7 @@
 
   <text x="36" y="30" class="hud-title">LIVE.FIELD</text>
   <text x="220" y="30" class="hud-meta">TOTAL //</text>
-  <text x="300" y="30" class="hud-num">2925</text>
+  <text x="300" y="30" class="hud-num">2922</text>
   <text x="420" y="30" class="hud-meta">STREAK //</text>
   <text x="510" y="30" class="hud-num">8</text>
   <text x="548" y="30" class="hud-dim">current · max 30</text>
@@ -43,7 +43,7 @@
   <g transform="translate(1052, 14)">
     <rect x="0" y="0" width="110" height="22" rx="11" fill="#12121a" stroke="#5a5a70" stroke-opacity="0.55" stroke-width="1"/>
     <circle class="pulse" cx="14" cy="11" r="3.4" fill="#4aff8a"/>
-    <text x="26" y="15" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" font-weight="700" fill="#8888a0" letter-spacing="1.4">ONLINE</text>
+    <text x="26" y="15" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace" font-size="10" font-weight="700" fill="#8888a0" letter-spacing="1.4">ONLINE</text>
   </g>
 
   <rect x="34" y="48" width="1132" height="198" rx="6" fill="#12121a" stroke="#1e1e28" stroke-width="1"/>
@@ -432,6 +432,6 @@
 
   <g opacity="0.9">
     <text x="1032" y="266" text-anchor="end" class="hud-dim" style="font-size:9px;letter-spacing:1px">12W</text>
-    <polyline fill="none" stroke="#5a5a70" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" points="1036.0,252.0 1046.9,259.8 1057.8,254.9 1068.7,266.2 1079.6,266.8 1090.5,262.5 1101.5,261.2 1112.4,258.9 1123.3,264.1 1134.2,263.5 1145.1,262.5 1156.0,260.0"/><circle cx="1156.0" cy="260.0" r="1.8" fill="#4aff8a"/>
+    <polyline fill="none" stroke="#5a5a70" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" points="1036.0,252.0 1046.9,259.8 1057.8,254.9 1068.7,266.2 1079.6,266.8 1090.5,262.5 1101.5,261.2 1112.4,258.9 1123.3,264.1 1134.2,263.5 1145.1,262.5 1156.0,260.2"/><circle cx="1156.0" cy="260.2" r="1.8" fill="#4aff8a"/>
   </g>
 </svg>
