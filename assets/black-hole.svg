@@ -1,200 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400" role="img" aria-label="ASCII black hole — Gargantua silhouette">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-label="ASCII black hole — Gargantua silhouette">
   <defs>
     <style>
       <![CDATA[
         .bh {
           font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-          font-size: 12px;
+          font-size: 9px;
           font-weight: 500;
           letter-spacing: 0;
           white-space: pre;
         }
         @keyframes twinkle {
           0%, 100% { opacity: 0.18; }
-          35% { opacity: 0.88; }
-          70% { opacity: 0.32; }
+          40% { opacity: 0.85; }
+          70% { opacity: 0.3; }
         }
-        @keyframes twinkle-soft {
-          0%, 100% { opacity: 0.1; }
-          50% { opacity: 0.48; }
+        @keyframes disk-shimmer-a {
+          0%, 100% { opacity: 0.75; }
+          50% { opacity: 1; }
+        }
+        @keyframes disk-shimmer-b {
+          0%, 100% { opacity: 0.92; }
+          50% { opacity: 0.58; }
         }
         @keyframes photon-breathe {
-          0%, 100% { opacity: 0.68; }
+          0%, 100% { opacity: 0.8; }
           50% { opacity: 1; }
         }
-        @keyframes disk-flow-a {
-          0%, 100% { opacity: 0.55; }
-          50% { opacity: 0.98; }
-        }
-        @keyframes disk-flow-b {
-          0%, 100% { opacity: 0.72; }
-          33% { opacity: 1; }
-          66% { opacity: 0.42; }
-        }
-        @keyframes disk-flow-c {
-          0%, 100% { opacity: 0.88; }
-          50% { opacity: 0.48; }
-        }
-        @keyframes disk-flow-d {
-          0%, 100% { opacity: 0.4; }
-          40% { opacity: 0.92; }
-          80% { opacity: 0.55; }
-        }
-        @keyframes doppler-pulse {
-          0%, 100% { opacity: 0.9; }
-          50% { opacity: 1; }
-        }
-        @keyframes recede-dim {
-          0%, 100% { opacity: 0.36; }
-          50% { opacity: 0.55; }
-        }
-        @keyframes arc-shimmer {
-          0%, 100% { opacity: 0.46; }
-          50% { opacity: 0.88; }
-        }
-        .star-a { animation: twinkle 5.2s ease-in-out infinite; }
-        .star-b { animation: twinkle 7.1s ease-in-out 1.4s infinite; }
-        .star-c { animation: twinkle-soft 6.4s ease-in-out 0.8s infinite; }
-        .star-d { animation: twinkle 8.3s ease-in-out 2.2s infinite; }
-        .star-e { animation: twinkle-soft 4.8s ease-in-out 0.3s infinite; }
-        .photon { animation: photon-breathe 6.5s ease-in-out infinite; }
-        .flow-a { animation: disk-flow-a 4.2s ease-in-out infinite; }
-        .flow-b { animation: disk-flow-b 3.6s ease-in-out 0.5s infinite; }
-        .flow-c { animation: disk-flow-c 5.1s ease-in-out 1.1s infinite; }
-        .flow-d { animation: disk-flow-d 4.8s ease-in-out 0.2s infinite; }
-        .doppler { animation: doppler-pulse 3.8s ease-in-out infinite; }
-        .recede { animation: recede-dim 5.4s ease-in-out 0.9s infinite; }
-        .arc-hi { animation: arc-shimmer 7.2s ease-in-out infinite; }
-        .arc-lo { animation: arc-shimmer 8.0s ease-in-out 1.6s infinite; }
+        .star-a { animation: twinkle 5.4s ease-in-out infinite; }
+        .star-b { animation: twinkle 7.2s ease-in-out 1.3s infinite; }
+        .star-c { animation: twinkle 6.1s ease-in-out 0.6s infinite; }
+        .disk-a { animation: disk-shimmer-a 4.8s ease-in-out infinite; }
+        .disk-b { animation: disk-shimmer-b 5.6s ease-in-out 0.8s infinite; }
+        .photon { animation: photon-breathe 7s ease-in-out infinite; }
       ]]>
     </style>
   </defs>
 
-  <rect width="1200" height="400" fill="#0a0a0f" rx="10"/>
-  <line x1="0" y1="1" x2="1200" y2="1" stroke="#e8e0d4" stroke-opacity="0.05" stroke-width="1.5"/>
-  <line x1="0" y1="399" x2="1200" y2="399" stroke="#e8e0d4" stroke-opacity="0.04" stroke-width="1.5"/>
+  <rect width="1200" height="420" fill="#0a0a0f" rx="10"/>
 
   <g class="bh" xml:space="preserve">
-    <text class="star-a" x="48" y="38" fill="#c8c8d4">.</text>
-    <text class="star-c" x="112" y="72" fill="#5a5a70">·</text>
-    <text class="star-b" x="186" y="28" fill="#8888a0">*</text>
-    <text class="star-e" x="240" y="95" fill="#5a5a70">.</text>
-    <text class="star-d" x="310" y="48" fill="#8888a0">·</text>
-    <text class="star-a" x="378" y="88" fill="#5a5a70">.</text>
-    <text class="star-c" x="430" y="32" fill="#c8c8d4">*</text>
-    <text class="star-b" x="520" y="58" fill="#5a5a70">.</text>
-    <text class="star-e" x="680" y="36" fill="#8888a0">·</text>
-    <text class="star-d" x="760" y="78" fill="#5a5a70">.</text>
-    <text class="star-a" x="840" y="42" fill="#c8c8d4">*</text>
-    <text class="star-c" x="920" y="66" fill="#5a5a70">.</text>
-    <text class="star-b" x="990" y="28" fill="#8888a0">·</text>
-    <text class="star-e" x="1060" y="88" fill="#5a5a70">.</text>
-    <text class="star-d" x="1135" y="48" fill="#c8c8d4">*</text>
-    <text class="star-b" x="64" y="320" fill="#5a5a70">.</text>
-    <text class="star-e" x="148" y="348" fill="#8888a0">*</text>
-    <text class="star-a" x="220" y="310" fill="#5a5a70">·</text>
-    <text class="star-c" x="300" y="355" fill="#5a5a70">.</text>
-    <text class="star-d" x="400" y="328" fill="#c8c8d4">*</text>
-    <text class="star-b" x="780" y="340" fill="#5a5a70">.</text>
-    <text class="star-a" x="860" y="318" fill="#8888a0">·</text>
-    <text class="star-e" x="940" y="350" fill="#5a5a70">.</text>
-    <text class="star-c" x="1020" y="325" fill="#c8c8d4">*</text>
-    <text class="star-d" x="1110" y="345" fill="#5a5a70">.</text>
-    <text class="star-a" x="90" y="160" fill="#5a5a70">.</text>
-    <text class="star-c" x="150" y="210" fill="#8888a0">·</text>
-    <text class="star-b" x="1050" y="150" fill="#5a5a70">.</text>
-    <text class="star-e" x="1100" y="200" fill="#8888a0">*</text>
-    <text class="star-d" x="80" y="250" fill="#5a5a70">.</text>
-    <text class="star-a" x="1120" y="260" fill="#5a5a70">·</text>
-    <text class="star-c" x="500" y="20" fill="#5a5a70">.</text>
-    <text class="star-b" x="610" y="355" fill="#8888a0">·</text>
-    <text class="star-e" x="55" y="120" fill="#5a5a70">*</text>
-    <text class="star-a" x="250" y="280" fill="#5a5a70">.</text>
-    <text class="star-d" x="950" y="280" fill="#5a5a70">·</text>
-    <text class="star-c" x="700" y="300" fill="#5a5a70">.</text>
-    <text class="star-b" x="160" y="40" fill="#8888a0">·</text>
+    <text class="star-a" x="40" y="30" fill="#c8c8d4">.</text>
+    <text class="star-b" x="105" y="48" fill="#8888a0">*</text>
+    <text class="star-c" x="185" y="36" fill="#5a5a70">·</text>
+    <text class="star-a" x="265" y="54" fill="#5a5a70">.</text>
+    <text class="star-b" x="930" y="40" fill="#8888a0">*</text>
+    <text class="star-c" x="1010" y="56" fill="#5a5a70">.</text>
+    <text class="star-a" x="1090" y="34" fill="#c8c8d4">·</text>
+    <text class="star-b" x="1155" y="50" fill="#5a5a70">*</text>
+    <text class="star-c" x="50" y="385" fill="#5a5a70">.</text>
+    <text class="star-a" x="135" y="400" fill="#8888a0">*</text>
+    <text class="star-b" x="990" y="390" fill="#5a5a70">·</text>
+    <text class="star-c" x="1110" y="402" fill="#c8c8d4">.</text>
+    <text class="star-a" x="28" y="195" fill="#5a5a70">*</text>
+    <text class="star-b" x="1172" y="225" fill="#8888a0">.</text>
   </g>
 
-  <!-- Gargantua: stable silhouette; disk flow + star twinkle + photon breathe -->
-  <g class="bh" transform="translate(200, 28)" xml:space="preserve">
-    <g class="arc-hi">
-      <text x="0" y="28" fill="#6a6358">                  ····::::++++ooooOOOO@@@@####@@@@OOOO++++::::····                                          </text>
-      <text x="0" y="39" fill="#8a7f6e">               ··::++ooOO@@##%%%%%%%%%%%%%%%%%%%%%%%%%%%%##@@OOoo++::··                                     </text>
-      <text x="0" y="50" fill="#c4a574">             ·:+oO@##%%%%%@%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%@%%%%%##@Oo+:·                                     </text>
-      <text x="0" y="61" fill="#a89b86">           ·:+O@#%%%@+                                      +@%%%#@O+:·                                     </text>
-      <text x="0" y="72" fill="#6a6358">          ·:+@#%%+                                              +%%#@+:·                                    </text>
-    </g>
-    <g class="arc-hi">
-      <text x="0" y="39" fill="#e8e0d4" opacity="0.35">               ··::++ooOO@@##%%%%%%%%%%%%%%%%%%%%%%%%%%%%##@@OOoo++::··                                     </text>
-      <text x="0" y="50" fill="#e8e0d4" opacity="0.35">             ·:+oO@##%%%%%@%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%@%%%%%##@Oo+:·                                     </text>
-    </g>
-    <g class="doppler">
-      <text class="flow-a" x="0" y="110" fill="#a89b86"> #####@@@@@OOOOO+++++:::::·······::                                                                         </text>
-      <text class="flow-b" x="0" y="121" fill="#c4a574">########@@@@@OOOOO+++++::::·····:                                                                           </text>
-      <text class="flow-c" x="0" y="132" fill="#e8e0d4">###########@@@@@OOOO++++::::····                                                                            </text>
-      <text class="flow-d" x="0" y="143" fill="#f0ebe3">##############@@@@@OOO+++:::···                                                                             </text>
-      <text class="flow-a" x="0" y="154" fill="#e8e0d4">###########@@@@@OOOO++++::::····                                                                            </text>
-      <text class="flow-b" x="0" y="165" fill="#c4a574">########@@@@@OOOOO+++++::::·····:                                                                           </text>
-      <text class="flow-c" x="0" y="176" fill="#a89b86"> #####@@@@@OOOOO+++++:::::·······::                                                                         </text>
-    </g>
-    <g class="recede">
-      <text class="flow-c" x="0" y="110" fill="#5a5a70">                                                          ::·······:::::+++++oooOO@@@@#####                 </text>
-      <text class="flow-d" x="0" y="121" fill="#5a5a70">                                                        ·····::::+++++oooOOO@@@@@########                   </text>
-      <text class="flow-a" x="0" y="132" fill="#4a4a5c">                                                       ····::::++++oooOOO@@@@@###########                   </text>
-      <text class="flow-b" x="0" y="143" fill="#3a3a48">                                                      ···:::+++oooOO@@@@@##############                     </text>
-      <text class="flow-c" x="0" y="154" fill="#4a4a5c">                                                       ····::::++++oooOOO@@@@@###########                   </text>
-      <text class="flow-d" x="0" y="165" fill="#5a5a70">                                                        ·····::::+++++oooOOO@@@@@########                   </text>
-      <text class="flow-a" x="0" y="176" fill="#5a5a70">                                                          ::·······:::::+++++oooOO@@@@#####                 </text>
-    </g>
-    <g>
-      <text class="flow-a" x="0" y="116" fill="#8a7f6e">                              ··::++ooOO                                                                    </text>
-      <text class="flow-b" x="0" y="127" fill="#b5a68e">                             ·:+oO@##%%%                                                                    </text>
-      <text class="flow-c" x="0" y="138" fill="#c4a574">                            ·:+O@#%%%%                                                                      </text>
-      <text class="flow-d" x="0" y="149" fill="#b5a68e">                             ·:+oO@##%%%                                                                    </text>
-      <text class="flow-a" x="0" y="160" fill="#8a7f6e">                              ··::++ooOO                                                                    </text>
-    </g>
-    <g>
-      <text class="flow-b" x="0" y="116" fill="#5a5a70">                                          OOoo++::··                                                        </text>
-      <text class="flow-c" x="0" y="127" fill="#6a6a7e">                                          %%%##@Oo+:·                                                       </text>
-      <text class="flow-d" x="0" y="138" fill="#6a6a7e">                                            %%%%#@O+:·                                                      </text>
-      <text class="flow-a" x="0" y="149" fill="#6a6a7e">                                          %%%##@Oo+:·                                                       </text>
-      <text class="flow-b" x="0" y="160" fill="#5a5a70">                                          OOoo++::··                                                        </text>
-    </g>
-    <g class="photon">
-      <text x="0" y="94" fill="#c4a574">                                ··:+*#@@@@@@#*+:··                                                          </text>
-      <text x="0" y="105" fill="#e8e0d4">                              ·:+*#@@@@@@@@@@@@#*+:·                                                        </text>
-      <text x="0" y="116" fill="#f0ebe3">                            ·:+#@@@@          @@@@#+:·                                                      </text>
-      <text x="0" y="127" fill="#e8e0d4">                           ·:+#@@@              @@@#+:·                                                     </text>
-      <text x="0" y="138" fill="#f0ebe3">                           :+#@@                  @@#+:                                                     </text>
-      <text x="0" y="149" fill="#e8e0d4">                           ·:+#@@@              @@@#+:·                                                     </text>
-      <text x="0" y="160" fill="#f0ebe3">                            ·:+#@@@@          @@@@#+:·                                                      </text>
-      <text x="0" y="171" fill="#e8e0d4">                              ·:+*#@@@@@@@@@@@@#*+:·                                                        </text>
-      <text x="0" y="182" fill="#c4a574">                                ··:+*#@@@@@@#*+:··                                                          </text>
-    </g>
-    <g>
-      <text x="0" y="116" fill="#0a0a0f">                               ################                                                             </text>
-      <text x="0" y="127" fill="#0a0a0f">                              ##################                                                            </text>
-      <text x="0" y="138" fill="#0a0a0f">                             ####################                                                           </text>
-      <text x="0" y="149" fill="#0a0a0f">                              ##################                                                            </text>
-      <text x="0" y="160" fill="#0a0a0f">                               ################                                                             </text>
-    </g>
-    <g>
-      <text x="0" y="122" fill="#050508">                                ················                                                            </text>
-      <text x="0" y="133" fill="#050508">                               ··················                                                           </text>
-      <text x="0" y="144" fill="#050508">                               ··················                                                           </text>
-      <text x="0" y="155" fill="#050508">                                ················                                                            </text>
-    </g>
-    <g class="arc-lo">
-      <text x="0" y="200" fill="#6a6358">          ·:+@#%%+                                              +%%#@+:·                                    </text>
-      <text x="0" y="211" fill="#a89b86">           ·:+O@#%%%@+                                      +@%%%#@O+:·                                     </text>
-      <text x="0" y="222" fill="#c4a574">             ·:+oO@##%%%%%@%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%@%%%%%##@Oo+:·                                     </text>
-      <text x="0" y="233" fill="#8a7f6e">               ··::++ooOO@@##%%%%%%%%%%%%%%%%%%%%%%%%%%%%##@@OOoo++::··                                     </text>
-      <text x="0" y="244" fill="#6a6358">                  ····::::++++ooooOOOO@@@@####@@@@OOOO++++::::····                                          </text>
-    </g>
-    <g class="arc-lo">
-      <text x="0" y="222" fill="#e8e0d4" opacity="0.3">             ·:+oO@##%%%%%@%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%@%%%%%##@Oo+:·                                     </text>
-      <text x="0" y="233" fill="#e8e0d4" opacity="0.3">               ··::++ooOO@@##%%%%%%%%%%%%%%%%%%%%%%%%%%%%##@@OOoo++::··                                     </text>
-    </g>
-  </g>
+  <text class="bh" x="600" y="81" text-anchor="middle" xml:space="preserve">
+    <tspan x="600" dy="0" fill="#5a5a70">           .   *         .                      *               .        *      .           </tspan>
+    <tspan x="600" dy="11" fill="#5a5a70">                    .              *                       .                 *              </tspan>
+    <tspan x="600" dy="11" fill="#c4a574">                                 ....::::++++####%%%%####++++::::....                       </tspan>
+    <tspan x="600" dy="11" fill="#c4a574">                             ..::+++###***::::::::::::::***###+++::..                       </tspan>
+    <tspan x="600" dy="11" fill="#a89b86">                        .::++##**::..                    ..::**##++::.                      </tspan>
+    <tspan x="600" dy="11" fill="#a89b86">                       .:+#*::.                              .::*#+:.                       </tspan>
+    <tspan x="600" dy="11" fill="#a89b86">                       :+#*:                                    :*#+:                       </tspan>
+    <tspan x="600" dy="11" class="photon" fill="#e8e0d4">                     :#*:         ..::++**########**++::..         :*#:                     </tspan>
+    <tspan x="600" dy="11" class="photon" fill="#e8e0d4">                     #:.        .::+*##@%%::::::::%%@##*+::.        .:#                     </tspan>
+    <tspan x="600" dy="11" class="photon" fill="#e8e0d4">                    *:       .:+*#@*:..    ......    ..:*@#*+:.       :*                    </tspan>
+    <tspan x="600" dy="11" class="photon" fill="#e8e0d4">                    *:      :+#@*:     ..:++####++:..     :*@#+:      :*                    </tspan>
+    <tspan x="600" dy="11" class="photon" fill="#e8e0d4">                    ·      :*@#:     .:+##        ##+:.     :#@*:      ·                    </tspan>
+    <tspan x="600" dy="11" class="disk-a" fill="#c4a574">             %%%%%%#####@@@@@####**++::..            ..::++**ooOO@@@@####**+::.             </tspan>
+    <tspan x="600" dy="11" class="disk-b" fill="#e8e0d4">             %%%%%%%%########@@@@@@@@####              ####@@@@OOOO****++++::::             </tspan>
+    <tspan x="600" dy="11" class="disk-a" fill="#b5a68e">             %%%%%%#####@@@@@####**++::..            ..::++**ooOO@@@@####**+::.             </tspan>
+    <tspan x="600" dy="11" class="photon" fill="#e8e0d4">                    ·      :*@#:     ':+##        ##+:'     :#@*:      ·                    </tspan>
+    <tspan x="600" dy="11" class="photon" fill="#e8e0d4">                     *:      :+#@*:     ''::++++::''     :*@#+:      :*                     </tspan>
+    <tspan x="600" dy="11" class="photon" fill="#e8e0d4">                    *:       .:+*#@*:..    ......    ..:*@#*+:.       :*                    </tspan>
+    <tspan x="600" dy="11" class="photon" fill="#e8e0d4">                    #:.        '.::+*##@%%::::::::%%@##*+::.'        .:#                    </tspan>
+    <tspan x="600" dy="11" class="photon" fill="#e8e0d4">                     :#*:         ''::++**########**++::''         :*#:                     </tspan>
+    <tspan x="600" dy="11" fill="#a89b86">                       :+#*:                                    :*#+:                       </tspan>
+    <tspan x="600" dy="11" fill="#a89b86">                       .:+#*::.                              .::*#+:.                       </tspan>
+    <tspan x="600" dy="11" fill="#a89b86">                        .::++##**::..                    ..::**##++::.                      </tspan>
+    <tspan x="600" dy="11" fill="#a89b86">                            '..::+++###***::::::::::::::***###+++::..'                      </tspan>
+    <tspan x="600" dy="11" fill="#c4a574">                             ''''....::::++++####%%%%####++++::::....''''                   </tspan>
+    <tspan x="600" dy="11" fill="#5a5a70">           .   *         .                      *               .        *      .           </tspan>
+  </text>
 </svg>
