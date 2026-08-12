@@ -55,142 +55,121 @@
     <text x="116" y="237" fill="#c8c8d4" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13" letter-spacing="0.8">online · shipping</text>
   </g>
 
-  <!-- ========== Stack icons — 10 equal tiles, 2×5 ========== -->
-  <!-- Palette: #e2e2e8 / #8888a0 / #5a5a70 only. Columns: 620 710 800 890 980 -->
+  <!-- ========== Stack icons — 10 equal tiles, 2×5, icons only (no labels) ========== -->
+  <!-- Palette: #e2e2e8 / #8888a0 / #5a5a70 only. Tile 48×48. Columns: 620 710 800 890 980 -->
+  <!-- Brand paths: 24×24 artboard, centered via translate(10,10) scale(1.16667) → 28×28 -->
 
   <!-- Row 1: AI · SWE · TypeScript · Bun · PHP -->
 
-  <!-- AI — text mark -->
-  <g transform="translate(620, 36)">
+  <!-- AI — literal text mark -->
+  <g transform="translate(620, 80)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -5; 0 0" dur="7s" repeatCount="indefinite"/>
-      <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
-      <text x="26" y="33" text-anchor="middle" fill="#e2e2e8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="17" font-weight="700" letter-spacing="1.5">AI</text>
-      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.4">AI</text>
+      <rect x="0" y="0" width="48" height="48" rx="13" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
+      <text x="24" y="31" text-anchor="middle" fill="#e2e2e8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="16" font-weight="700" letter-spacing="1.5">AI</text>
     </g>
   </g>
 
-  <!-- SWE — text mark -->
-  <g transform="translate(710, 36)">
+  <!-- SWE — literal text mark -->
+  <g transform="translate(710, 80)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="8.2s" begin="0.6s" repeatCount="indefinite"/>
-      <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
-      <text x="26" y="33" text-anchor="middle" fill="#e2e2e8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="14" font-weight="700" letter-spacing="0.8">SWE</text>
-      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.4">SWE</text>
+      <rect x="0" y="0" width="48" height="48" rx="13" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
+      <text x="24" y="31" text-anchor="middle" fill="#e2e2e8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13" font-weight="700" letter-spacing="0.8">SWE</text>
     </g>
   </g>
 
   <!-- TypeScript — official badge shape -->
-  <g transform="translate(800, 36)">
+  <g transform="translate(800, 80)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -4; 0 0" dur="6.5s" begin="1.1s" repeatCount="indefinite"/>
-      <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
-      <rect x="8" y="8" width="36" height="36" rx="7" fill="#e2e2e8"/>
-      <text x="26" y="33" text-anchor="middle" fill="#0a0a0f" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="15" font-weight="800" letter-spacing="-0.4">TS</text>
-      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="0.3">TypeScript</text>
+      <rect x="0" y="0" width="48" height="48" rx="13" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
+      <rect x="8" y="8" width="32" height="32" rx="6" fill="#e2e2e8"/>
+      <text x="24" y="30" text-anchor="middle" fill="#0a0a0f" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="14" font-weight="800" letter-spacing="-0.4">TS</text>
     </g>
   </g>
 
-  <!-- Bun — simplified mono face -->
-  <g transform="translate(890, 36)">
+  <!-- Bun — simple-icons monochrome silhouette -->
+  <g transform="translate(890, 80)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -5; 0 0" dur="7.6s" begin="0.3s" repeatCount="indefinite"/>
-      <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
-      <g transform="translate(8, 10)">
-        <ellipse cx="18" cy="18" rx="15" ry="13.5" fill="#e2e2e8"/>
-        <ellipse cx="18" cy="16.5" rx="11.5" ry="9.5" fill="#c8c8d4"/>
-        <circle cx="12.5" cy="16.5" r="1.9" fill="#0a0a0f"/>
-        <circle cx="23.5" cy="16.5" r="1.9" fill="#0a0a0f"/>
-        <path d="M13.5 22 Q18 25.5 22.5 22" fill="none" stroke="#0a0a0f" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M9 5 Q10.5 1.5 12 5" fill="none" stroke="#8888a0" stroke-width="1.3" stroke-linecap="round"/>
-        <path d="M16 3.5 Q17.5 0 19 3.5" fill="none" stroke="#8888a0" stroke-width="1.3" stroke-linecap="round"/>
-        <path d="M23 5 Q24.5 1.5 26 5" fill="none" stroke="#8888a0" stroke-width="1.3" stroke-linecap="round"/>
+      <rect x="0" y="0" width="48" height="48" rx="13" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
+      <g transform="translate(10, 10) scale(1.16667)">
+        <path fill="#e2e2e8" d="M12 22.596c6.628 0 12-4.338 12-9.688 0-3.318-2.057-6.248-5.219-7.986-1.286-.715-2.297-1.357-3.139-1.89C14.058 2.025 13.08 1.404 12 1.404c-1.097 0-2.334.785-3.966 1.821a49.92 49.92 0 0 1-2.816 1.697C2.057 6.66 0 9.59 0 12.908c0 5.35 5.372 9.687 12 9.687v.001ZM10.599 4.715c.334-.759.503-1.58.498-2.409 0-.145.202-.187.23-.029.658 2.783-.902 4.162-2.057 4.624-.124.048-.199-.121-.103-.209a5.763 5.763 0 0 0 1.432-1.977Zm2.058-.102a5.82 5.82 0 0 0-.782-2.306v-.016c-.069-.123.086-.263.185-.172 1.962 2.111 1.307 4.067.556 5.051-.082.103-.23-.003-.189-.126a5.85 5.85 0 0 0 .23-2.431Zm1.776-.561a5.727 5.727 0 0 0-1.612-1.806v-.014c-.112-.085-.024-.274.114-.218 2.595 1.087 2.774 3.18 2.459 4.407a.116.116 0 0 1-.049.071.11.11 0 0 1-.153-.026.122.122 0 0 1-.022-.083 5.891 5.891 0 0 0-.737-2.331Zm-5.087.561c-.617.546-1.282.76-2.063 1-.117 0-.195-.078-.156-.181 1.752-.909 2.376-1.649 2.999-2.778 0 0 .155-.118.188.085 0 .304-.349 1.329-.968 1.874Zm4.945 11.237a2.957 2.957 0 0 1-.937 1.553c-.346.346-.8.565-1.286.62a2.178 2.178 0 0 1-1.327-.62 2.955 2.955 0 0 1-.925-1.553.244.244 0 0 1 .064-.198.234.234 0 0 1 .193-.069h3.965a.226.226 0 0 0 .19.07c.05.053.073.125.063.197Zm-5.458-2.176a1.862 1.862 0 0 1-2.384-.245 1.98 1.98 0 0 1-.233-2.447c.207-.319.503-.566.848-.713a1.84 1.84 0 0 1 1.092-.11c.366.075.703.261.967.531a1.98 1.98 0 0 1 .408 2.114 1.931 1.931 0 0 1-.698.869v.001Zm8.495.005a1.86 1.86 0 0 1-2.381-.253 1.964 1.964 0 0 1-.547-1.366c0-.384.11-.76.32-1.079.207-.319.503-.567.849-.713a1.844 1.844 0 0 1 1.093-.108c.367.076.704.262.968.534a1.98 1.98 0 0 1 .4 2.117 1.932 1.932 0 0 1-.702.868Z"/>
       </g>
-      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.4">Bun</text>
     </g>
   </g>
 
   <!-- PHP — official-style pill wordmark -->
-  <g transform="translate(980, 36)">
+  <g transform="translate(980, 80)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="8.8s" begin="1.5s" repeatCount="indefinite"/>
-      <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
-      <rect x="7" y="16" width="38" height="20" rx="10" fill="#e2e2e8"/>
-      <text x="26" y="31" text-anchor="middle" fill="#0a0a0f" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="800" font-style="italic" letter-spacing="0.2">php</text>
-      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.4">PHP</text>
+      <rect x="0" y="0" width="48" height="48" rx="13" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
+      <rect x="6" y="15" width="36" height="18" rx="9" fill="#e2e2e8"/>
+      <text x="24" y="28.5" text-anchor="middle" fill="#0a0a0f" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="800" font-style="italic" letter-spacing="0.2">php</text>
     </g>
   </g>
 
   <!-- Row 2: Laravel · React · Angular · Vue · Node -->
 
-  <!-- Laravel — four-bar geometric mark (mono) -->
-  <g transform="translate(620, 148)">
+  <!-- Laravel — official geometric mark (simple-icons path) -->
+  <g transform="translate(620, 172)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -5; 0 0" dur="7.4s" begin="0.4s" repeatCount="indefinite"/>
-      <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
-      <g transform="translate(11, 11)">
-        <path d="M2 6 L12 2 L15.5 9.5 L5.5 13.5 Z" fill="#e2e2e8"/>
-        <path d="M14 6 L24 2 L27.5 9.5 L17.5 13.5 Z" fill="#e2e2e8" opacity="0.75"/>
-        <path d="M5.5 16.5 L15.5 12.5 L19 20 L9 24 Z" fill="#8888a0"/>
-        <path d="M17.5 16.5 L27.5 12.5 L31 20 L21 24 Z" fill="#8888a0" opacity="0.75"/>
+      <rect x="0" y="0" width="48" height="48" rx="13" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
+      <g transform="translate(10, 10) scale(1.16667)">
+        <path fill="#e2e2e8" d="M23.642 5.43a.364.364 0 01.014.1v5.149c0 .135-.073.26-.189.326l-4.323 2.49v4.934a.378.378 0 01-.188.326L9.93 23.949a.316.316 0 01-.066.027c-.008.002-.016.008-.024.01a.348.348 0 01-.192 0c-.011-.002-.02-.008-.03-.012-.02-.008-.042-.014-.062-.025L.533 18.755a.376.376 0 01-.189-.326V2.974c0-.033.005-.066.014-.098.003-.012.01-.02.014-.032a.369.369 0 01.023-.058c.004-.013.015-.022.023-.033l.033-.045c.012-.01.025-.018.037-.027.014-.012.027-.024.041-.034H.53L5.043.05a.375.375 0 01.375 0L9.93 2.647h.002c.015.01.027.021.04.033l.038.027c.013.014.02.03.033.045.008.011.02.021.025.033.01.02.017.038.024.058.003.011.01.021.013.032.01.031.014.064.014.098v9.652l3.76-2.164V5.527c0-.033.004-.066.013-.098.003-.01.01-.02.013-.032a.487.487 0 01.024-.059c.007-.012.018-.02.025-.033.012-.015.021-.03.033-.043.012-.012.025-.02.037-.028.014-.01.026-.023.041-.032h.001l4.513-2.598a.375.375 0 01.375 0l4.513 2.598c.016.01.027.021.042.031.012.01.025.018.036.028.013.014.022.03.034.044.008.012.019.021.024.033.011.02.018.04.024.06.006.01.012.021.015.032zm-.74 5.032V6.179l-1.578.908-2.182 1.256v4.283zm-4.51 7.75v-4.287l-2.147 1.225-6.126 3.498v4.325zM1.093 3.624v14.588l8.273 4.761v-4.325l-4.322-2.445-.002-.003H5.04c-.014-.01-.025-.021-.04-.031-.011-.01-.024-.018-.035-.027l-.001-.002c-.013-.012-.021-.025-.031-.04-.01-.011-.021-.022-.028-.036h-.002c-.008-.014-.013-.031-.02-.047-.006-.016-.014-.027-.018-.043a.49.49 0 01-.008-.057c-.002-.014-.006-.027-.006-.041V5.789l-2.18-1.257zM5.23.81L1.47 2.974l3.76 2.164 3.758-2.164zm1.956 13.505l2.182-1.256V3.624l-1.58.91-2.182 1.255v9.435zm11.581-10.95l-3.76 2.163 3.76 2.163 3.759-2.164zm-.376 4.978L16.21 7.087 14.63 6.18v4.283l2.182 1.256 1.58.908zm-8.65 9.654l5.514-3.148 2.756-1.572-3.757-2.163-4.323 2.489-3.941 2.27z"/>
       </g>
-      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="0.3">Laravel</text>
     </g>
   </g>
 
   <!-- React — official atom -->
-  <g transform="translate(710, 148)">
+  <g transform="translate(710, 172)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -5; 0 0" dur="7.3s" begin="0.9s" repeatCount="indefinite"/>
-      <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
-      <g transform="translate(8, 8)" fill="none" stroke="#e2e2e8" stroke-width="1.45">
-        <ellipse cx="18" cy="18" rx="15" ry="5.8"/>
-        <ellipse cx="18" cy="18" rx="15" ry="5.8" transform="rotate(60 18 18)"/>
-        <ellipse cx="18" cy="18" rx="15" ry="5.8" transform="rotate(120 18 18)"/>
-        <circle cx="18" cy="18" r="2.6" fill="#e2e2e8" stroke="none"/>
+      <rect x="0" y="0" width="48" height="48" rx="13" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
+      <g transform="translate(7, 7)" fill="none" stroke="#e2e2e8" stroke-width="1.4">
+        <ellipse cx="17" cy="17" rx="14" ry="5.4"/>
+        <ellipse cx="17" cy="17" rx="14" ry="5.4" transform="rotate(60 17 17)"/>
+        <ellipse cx="17" cy="17" rx="14" ry="5.4" transform="rotate(120 17 17)"/>
+        <circle cx="17" cy="17" r="2.4" fill="#e2e2e8" stroke="none"/>
       </g>
-      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="0.8">React</text>
     </g>
   </g>
 
   <!-- Angular — official shield -->
-  <g transform="translate(800, 148)">
+  <g transform="translate(800, 172)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -4; 0 0" dur="6.8s" begin="0.2s" repeatCount="indefinite"/>
-      <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
+      <rect x="0" y="0" width="48" height="48" rx="13" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
       <g transform="translate(10, 8)">
-        <path d="M16 2 L32 8 L28.5 30 L16 37 L3.5 30 L0 8 Z" fill="#e2e2e8"/>
-        <path d="M16 8 L26.5 12 L24 28 L16 33 L8 28 L5.5 12 Z" fill="#12121a" opacity="0.35"/>
-        <path d="M11 26 L16 10 L21 26 H18 L16 18.5 L14 26 Z" fill="#0a0a0f"/>
+        <path d="M14 1 L29 7 L25.8 27 L14 33.5 L2.2 27 L-1 7 Z" fill="#e2e2e8"/>
+        <path d="M14 7 L23.5 10.5 L21.2 25 L14 29.5 L6.8 25 L4.5 10.5 Z" fill="#12121a" opacity="0.35"/>
+        <path d="M9.5 24 L14 9.5 L18.5 24 H15.8 L14 17 L12.2 24 Z" fill="#0a0a0f"/>
       </g>
-      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="0.4">Angular</text>
     </g>
   </g>
 
-  <!-- Vue — official V, point DOWN (correct brand orientation) -->
-  <g transform="translate(890, 148)">
+  <!-- Vue — official V, point DOWN -->
+  <g transform="translate(890, 172)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -6; 0 0" dur="8s" begin="1.3s" repeatCount="indefinite"/>
-      <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
-      <g transform="translate(10, 10)">
-        <path d="M2 2 L16 30 L30 2 H23 L16 16 L9 2 Z" fill="#e2e2e8"/>
-        <path d="M9 2 L16 18 L23 2 H19.5 L16 10 L12.5 2 Z" fill="#0a0a0f"/>
+      <rect x="0" y="0" width="48" height="48" rx="13" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
+      <g transform="translate(9, 9)">
+        <path d="M2 2 L15 28 L28 2 H21.5 L15 15 L8.5 2 Z" fill="#e2e2e8"/>
+        <path d="M8.5 2 L15 17 L21.5 2 H18.2 L15 9.5 L11.8 2 Z" fill="#0a0a0f"/>
       </g>
-      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1.4">Vue</text>
     </g>
   </g>
 
-  <!-- Node — official hexagon mark -->
-  <g transform="translate(980, 148)">
+  <!-- Node — official hexagon mark (simple-icons nodedotjs) -->
+  <g transform="translate(980, 172)">
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -5; 0 0" dur="7.9s" begin="0.7s" repeatCount="indefinite"/>
-      <rect x="0" y="0" width="52" height="52" rx="14" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
-      <g transform="translate(10, 8)">
-        <path d="M16 2 L30 10 V26 L16 34 L2 26 V10 Z" fill="none" stroke="#e2e2e8" stroke-width="1.9" stroke-linejoin="round"/>
-        <path d="M16 8 L25 13.5 V24.5 L16 30 L7 24.5 V13.5 Z" fill="#5a5a70" opacity="0.35"/>
-        <text x="16" y="22" text-anchor="middle" fill="#e2e2e8" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="700">js</text>
+      <rect x="0" y="0" width="48" height="48" rx="13" fill="#12121a" stroke="#5a5a70" stroke-width="1.1"/>
+      <g transform="translate(10, 10) scale(1.16667)">
+        <path fill="#e2e2e8" d="M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L3.075,6.68C2.99,6.729,2.936,6.825,2.936,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.57,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z"/>
       </g>
-      <text x="26" y="68" text-anchor="middle" fill="#8888a0" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10" letter-spacing="1">Node</text>
     </g>
   </g>
 </svg>
