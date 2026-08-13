@@ -7,5 +7,5 @@
 <br/>
 
 <div align="center">
-  <img src="./assets/black-hole.svg" width="100%" alt="ASCII black hole" />
+  <img src="./assets/black-hole.svg" width="100%" alt="Black hole" />
 </div>
