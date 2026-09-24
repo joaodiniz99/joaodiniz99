@@ -1,256 +1,329 @@
 #!/usr/bin/env python3
-"""Generates assets/black-hole.svg — a particle accretion disk that orbits.
+# /// script
+# requires-python = ">=3.11"
+# dependencies = ["numpy>=2", "pillow>=11"]
+# ///
+"""Generates assets/black-hole.svg - a ray-traced black hole whose disc streams.
 
-Three properties are enforced by construction:
+GitHub shows the README's SVG through <img>: no script runs, and every frame of
+an animation re-rasterises the whole image. So everything expensive is computed
+once, here, and the browser only moves a few textures.
 
-  symmetry  every shape is centred on cx and its organic wobble is built only
-            from even harmonics, m(th) = 1 + sum a_k cos(2k*th), which satisfies
-            m(pi - th) == m(th) -> identical envelope on both sides. Anything
-            with a phase, a rotation or a horizontal offset breaks this.
+  base      one WebP ray-traced below: null geodesics around a Schwarzschild
+            hole meeting a thin disc seen at 84 degrees. That gives the shadow,
+            the thin photon ring, the far side of the disc lensed over and
+            under the shadow, and the near side crossing in front of it. The
+            approaching (left) side is brighter and cooler, the receding side
+            dimmer and warmer (Doppler beaming and redshift). The glow is baked
+            in, so no filter or blur ever runs in the browser.
 
-  motion    every orbit is a dashed stroke with pathLength="100", animated by
-            shifting stroke-dashoffset by the full path length, so each particle
-            covers its whole arc per cycle and the loop is seamless. Inner
-            orbits run faster than outer ones. Shifting by a single dash period
-            instead is the classic trap: the dots crawl one gap and read as
-            static.
+  lanes     one small texture of dark gas lanes along the orbits. Six copies of
+            it rotate, each clipped to a ring and turning at the Keplerian rate
+            of its radius (period ~ r^1.5), so the inner disc overtakes the
+            outer one. Three lie in the disc plane (squashed by cos i); three
+            lie on the lensed arcs, behind a static mask of how far lensing
+            moved each pixel. Darkening a static image keeps the Doppler
+            brightness fixed on screen while the gas streams through it.
 
-  depth     each orbit is drawn in two halves. The far half goes behind the
-            shadow, the near half in front of it and lifted as it passes the
-            sphere, so the horizon sits inside the disk. Front/back is a
-            top/bottom split, which leaves the mirror symmetry intact.
+  motion    six animated elements, transform only, with no animation under
+            prefers-reduced-motion.
 
-  python3 tools/black-hole.py > assets/black-hole.svg
+  uv run tools/black-hole.py > assets/black-hole.svg
 """
+import base64
+import io
 import math
-import random
 import sys
+
+import numpy as np
+from PIL import Image
 
 W, H = 1200, 520
 CX, CY = 600.0, 262.0
+S = 20.0                        # viewBox px per M (G = c = 1)
+INC = math.radians(84.0)        # angle between the line of sight and the disc axis
+R_IN, R_OUT = 6.0, 24.0         # innermost stable orbit to the fading outer edge
+B_CRIT = 3.0 * math.sqrt(3.0)   # shadow radius, as an impact parameter
 
-R_IN = 148.0
-R_OUT = 470.0
-N_RINGS = 118
+SCALE = 1.5                     # base image px per viewBox px
+SS = 2                          # supersampling per axis
+SKY = "#0a0a0f"                 # the header's background
+TINT = ["#d9a57e", "#e4ddd6", "#e3e6f5"]  # redshifted -> at rest -> blueshifted
+TINT_SAT = 0.8
+BEAMING = 3.0                   # I ~ g^3: softer than g^4, so the receding side stays visible
+EXPOSURE, GAMMA = 2.0, 2.0
 
-VOID_RX, VOID_RY = 112.0, 99.0
+TEX = 768                       # lane texture size
+RHO0 = 0.55                     # the texture is a ring from RHO0 to 1 of its radius
+LANE_ALPHA = 0.45
+T0 = 8.0                        # orbital period, in seconds, at r = 7
 
-# dash periods (dashes per full path) and orbital periods, as shared CSS buckets
-DASH_BUCKETS = [18, 26, 36, 48, 64, 84, 110, 142, 184, 236]
-SPEEDS = [7, 8.5, 10, 12, 14.5, 17.5, 21, 25, 30, 36, 43, 51]
+# (plane, ring from, ring to, texture radius, orbit radius driving the period,
+#  opacity), radii in M. "sky" rings stream along the lensed arcs.
+LAYERS = [
+    ("disc", 6.0, 9.0, 10.0, 7.3, 0.45),
+    ("disc", 9.0, 14.0, 15.5, 11.2, 0.45),
+    ("disc", 14.0, 24.0, 24.0, 18.3, 0.27),
+    ("sky", 5.3, 7.0, 8.9, 7.3, 1.0),
+    ("sky", 7.0, 8.6, 9.6, 11.2, 1.0),
+    ("sky", 8.6, 11.5, 11.5, 18.3, 0.8),
+]
 
-random.seed(20260813)
-
-
-def flat(r):
-    """vertical/horizontal ratio: rounder near the hole, flat far out"""
-    t = (r - R_IN) / (R_OUT - R_IN)
-    return 0.255 + 0.335 * math.exp(-3.1 * t)
-
-
-def wobble(amps):
-    """even-harmonic radial multiplier -> mirror symmetric about x = CX"""
-    def m(th):
-        v = 1.0
-        for k, a in enumerate(amps, start=1):
-            v += a * math.cos(2 * k * th)
-        return v
-    return m
-
-
-def lift(r, x, k):
-    """Light bends near the hole, so the near half of the disk climbs across the
-    face of the sphere instead of passing under it. Driven by |x - CX| only,
-    which keeps both sides identical; k is 0 for the far half."""
-    if k == 0:
-        return 0.0
-    amp = k * 30.0 * math.exp(-(r - R_IN) / 240.0)
-    return amp * math.exp(-(((x - CX) / (VOID_RX * 2.1)) ** 2))
+rng = np.random.default_rng(20260924)
 
 
-def pt(r, fr, m, dy, th, k=0.0):
-    mm = m(th)
-    x = CX + r * mm * math.cos(th)
-    y = CY + dy + r * fr * mm * math.sin(th) - lift(r, x, k)
-    return x, y
+def smoothstep(e0, e1, x):
+    t = np.clip((x - e0) / (e1 - e0), 0, 1)
+    return t * t * (3 - 2 * t)
 
 
-def ring_path(r, fr, m, dy, steps=260, k=0.0):
-    pts = [pt(r, fr, m, dy, 2 * math.pi * s / steps, k) for s in range(steps + 1)]
-    return "M" + "L".join(f"{x:.1f},{y:.1f}" for x, y in pts) + "Z"
+def to_lin(c):
+    return np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
 
 
-def arc_path(r, fr, m, dy, th_c, half, steps=90, k=0.0):
-    """arc centred on th_c (pi/2 or 3pi/2) -> symmetric about x = CX"""
-    pts = [pt(r, fr, m, dy, th_c - half + 2 * half * s / steps, k) for s in range(steps + 1)]
-    return "M" + "L".join(f"{x:.1f},{y:.1f}" for x, y in pts)
+def to_srgb(c):
+    return np.where(c <= 0.0031308, c * 12.92, 1.055 * np.maximum(c, 0) ** (1 / 2.4) - 0.055)
 
 
-def speed_class(r):
-    t = (r ** 0.8 - R_IN ** 0.8) / (R_OUT ** 0.8 - R_IN ** 0.8)
-    return min(max(int(round(t * (len(SPEEDS) - 1))), 0), len(SPEEDS) - 1)
+def hex_rgb(c):
+    return np.array([int(c[i:i + 2], 16) for i in (1, 3, 5)], float) / 255.0
 
 
-def dash_class(r, fr, span=1.0):
-    """pick the bucket whose dash spacing lands nearest the target, in px"""
-    circ = math.pi * (1.5 * (r + r * fr) - math.sqrt(r * r * fr)) * span
-    best, bd = 0, float("inf")
-    for i, count in enumerate(DASH_BUCKETS):
-        d = abs(circ / count - 12.0)
-        if d < bd:
-            bd, best = d, i
-    return best
+def blur(img, sigma):
+    """three box passes per axis, close to a gaussian"""
+    r = max(1, int(round(sigma)))
+    for axis in (0, 1):
+        for _ in range(3):
+            pad = [(0, 0)] * img.ndim
+            pad[axis] = (r + 1, r)
+            c = np.cumsum(np.pad(img, pad), axis=axis)
+            hi = [slice(None)] * img.ndim
+            lo = [slice(None)] * img.ndim
+            hi[axis] = slice(2 * r + 1, None)
+            lo[axis] = slice(0, -2 * r - 1)
+            img = (c[tuple(hi)] - c[tuple(lo)]) / (2 * r + 1)
+    return img
 
 
-out = []
-out.append('<?xml version="1.0" encoding="UTF-8"?>')
-out.append(
-    f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
-    f'viewBox="0 0 {W} {H}" role="img" aria-label="Black hole">'
-)
-
-css = ['@keyframes orb{to{stroke-dashoffset:-100}}']
-css.append('.fl{animation-name:orb;animation-timing-function:linear;animation-iteration-count:infinite}')
-for i, s in enumerate(SPEEDS):
-    css.append(f'.s{i}{{animation-duration:{s}s}}')
-css.append('@keyframes tw{0%,100%{opacity:.12}50%{opacity:.7}}')
-css.append('@keyframes tw2{0%,100%{opacity:.08}44%{opacity:.5}}')
-css.append('.t0{animation:tw 5.3s ease-in-out infinite}')
-css.append('.t1{animation:tw2 7.4s ease-in-out 1.2s infinite}')
-css.append('.t2{animation:tw 6.1s ease-in-out .5s infinite}')
-css.append('@keyframes bre{0%,100%{opacity:.6}50%{opacity:.9}}')
-css.append('.ph{animation:bre 9.5s ease-in-out infinite}')
-css.append('@media (prefers-reduced-motion:reduce){.fl,.t0,.t1,.t2,.ph{animation:none}}')
-
-out.append('<defs>')
-out.append(
-    '  <radialGradient id="sink" cx="50%" cy="50%" r="50%">'
-    '<stop offset="0%" stop-color="#000000" stop-opacity="1"/>'
-    '<stop offset="52%" stop-color="#000000" stop-opacity="0.96"/>'
-    '<stop offset="74%" stop-color="#000000" stop-opacity="0.55"/>'
-    '<stop offset="100%" stop-color="#000000" stop-opacity="0"/>'
-    '</radialGradient>'
-)
-out.append(
-    '  <radialGradient id="core" cx="50%" cy="50%" r="50%">'
-    '<stop offset="0%" stop-color="#000000" stop-opacity="1"/>'
-    '<stop offset="90%" stop-color="#000000" stop-opacity="1"/>'
-    '<stop offset="100%" stop-color="#000000" stop-opacity="0"/>'
-    '</radialGradient>'
-)
-out.append('  <style>' + "".join(css) + '</style>')
-out.append('</defs>')
-out.append(f'<rect width="{W}" height="{H}" fill="#030305"/>')
-
-# ---- starfield ----
-for cls in ("t0", "t1", "t2"):
-    out.append(f'<g class="{cls}">')
-    for _ in range(26):
-        x, y = random.uniform(6, W - 6), random.uniform(6, H - 6)
-        if ((x - CX) / 300.0) ** 2 + ((y - CY) / 110.0) ** 2 < 1.0:
-            continue
-        out.append(
-            f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{random.uniform(0.32, 1.05):.2f}" '
-            f'fill="#f3f3f6" fill-opacity="{random.uniform(0.18, 0.62):.3f}"/>'
-        )
-    out.append('</g>')
+# ---- null geodesics ----
+# A photon reaching the camera at impact parameter b moves in a plane; with
+# u = 1/r and psi the angle swept from the camera direction, u'' = 3u^2 - u,
+# u(0) = 0, u'(0) = 1/b. One table of u(psi) over b serves every pixel.
+B_W = 0.05                      # b grid is dense near B_CRIT: b = B_CRIT + B_W sinh(s)
+S_LO, S_HI = math.asinh(-B_CRIT / B_W), math.asinh((45.0 - B_CRIT) / B_W)
+NB = 3000
+D_PSI = 0.004
+PSI_MAX = 3 * math.pi + 0.05    # room for the third crossing of the disc plane
 
 
-GEOM = {}
+def geodesics():
+    """u[psi, b]: 0.6 once captured (inside the horizon), 0 once escaped"""
+    b = np.maximum(B_CRIT + B_W * np.sinh(np.linspace(S_LO, S_HI, NB)), 1e-3)
+    u, v = np.zeros(NB), 1.0 / b
+    tab = np.zeros((int(PSI_MAX / D_PSI) + 2, NB), np.float32)
+    captured = np.zeros(NB, bool)
+    escaped = np.zeros(NB, bool)
+    h = D_PSI
+
+    def f(u, v):
+        return v, 3.0 * u * u - u
+
+    for k in range(1, len(tab)):
+        k1 = f(u, v)
+        k2 = f(u + h / 2 * k1[0], v + h / 2 * k1[1])
+        k3 = f(u + h / 2 * k2[0], v + h / 2 * k2[1])
+        k4 = f(u + h * k3[0], v + h * k3[1])
+        u = u + h / 6 * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0])
+        v = v + h / 6 * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1])
+        captured |= u >= 0.5
+        escaped |= (u <= 0.0) & ~captured
+        u = np.where(captured, 0.6, np.where(escaped, 0.0, u))
+        v = np.where(captured | escaped, 0.0, v)
+        tab[k] = u
+    return tab
 
 
-def geom_id(d):
-    """emit each path geometry once; strokes reference it with <use>"""
-    if d not in GEOM:
-        GEOM[d] = f"g{len(GEOM)}"
-    return GEOM[d]
+def radius_at(tab, b, psi):
+    """bilinear lookup of r(psi) for impact parameters b"""
+    fs = (np.arcsinh((b - B_CRIT) / B_W) - S_LO) / (S_HI - S_LO) * (NB - 1)
+    fp = psi / D_PSI
+    i = np.clip(np.floor(fs).astype(int), 0, NB - 2)
+    j = np.clip(np.floor(fp).astype(int), 0, len(tab) - 2)
+    ts, tp = np.clip(fs - i, 0, 1), np.clip(fp - j, 0, 1)
+    u = ((tab[j, i] * (1 - ts) + tab[j, i + 1] * ts) * (1 - tp)
+         + (tab[j + 1, i] * (1 - ts) + tab[j + 1, i + 1] * ts) * tp)
+    return 1.0 / np.maximum(u, 1e-9)
 
 
-def flow(d, r, fr, op, sw, dash_on, span=1.0, color="#f3f3f6"):
-    """a dashed stroke that streams along the referenced path"""
-    di = dash_class(r, fr, span)
-    period = 100.0 / DASH_BUCKETS[di]
-    on = min(dash_on, period * 0.85)
-    return (
-        f'<use href="#{geom_id(d)}" class="fl s{speed_class(r)}" fill="none" '
-        f'stroke="{color}" stroke-opacity="{op:.3f}" stroke-width="{sw:.2f}" '
-        f'stroke-dasharray="{on:.3f} {period - on:.3f}" '
-        f'stroke-dashoffset="{random.uniform(0, period):.3f}" stroke-linecap="round"/>'
-    )
+# ---- disc shading ----
+def emission(r):
+    """thin-disc profile rising from the inner edge; returns (brightness, opacity)"""
+    q = np.clip(R_IN / r, 0, 1)
+    shape = q ** 3 * np.sqrt(np.clip(1 - np.sqrt(q), 0, 1))
+    qq = np.linspace(0.01, 1, 2000)
+    peak = (qq ** 3 * np.sqrt(1 - np.sqrt(qq))).max()
+    inner = smoothstep(R_IN, R_IN + 0.5, r)
+    return (shape / peak * inner * (1 - smoothstep(0.3 * R_OUT, R_OUT, r)),
+            inner * (1 - smoothstep(0.8 * R_OUT, R_OUT, r)))
 
 
-# The disk is split at the horizon: the far half is drawn behind the shadow, the
-# near half in front of it, so the sphere sits inside the disk instead of on top
-# of it. Front/back is a top/bottom split, so mirror symmetry is untouched.
-FAR, NEAR = [], []
+def tint(t):
+    """unit-luminance linear colour, from warm (t = 0) to cool (t = 1)"""
+    cols = to_lin(np.array([hex_rgb(c) for c in TINT]))
+    cols = 1 + TINT_SAT * (cols / (cols @ [0.2126, 0.7152, 0.0722])[:, None] - 1)
+    return np.stack([np.interp(t, [0.0, 0.45, 1.0], cols[:, c]) for c in range(3)], -1)
 
-for i in range(N_RINGS):
-    t = i / (N_RINGS - 1)
-    r = R_IN + (R_OUT - R_IN) * (t ** 1.45)
-    fr = flat(r)
-    m = wobble([random.uniform(-0.045, 0.045) * (0.62 ** k) for k in range(4)])
-    dy = random.gauss(0, 2.6)
 
-    base = 0.200 * math.exp(-2.0 * t) + 0.040
-    op = base * random.uniform(0.7, 1.35)
-    sw = random.uniform(0.36, 0.74)
+def render_base(tab):
+    """-> (sRGB base image, mask of the lensed arcs at a quarter of the viewBox)"""
+    w, h = int(W * SCALE * SS), int(H * SCALE * SS)
+    X, Y = np.meshgrid(((np.arange(w) + 0.5) / (SCALE * SS) - CX) / S,
+                       (CY - (np.arange(h) + 0.5) / (SCALE * SS)) / S)
+    b = np.hypot(X, Y)
+    si, ci = math.sin(INC), math.cos(INC)
+    # the photon crosses the disc plane at psi0, psi0 + pi, psi0 + 2pi
+    psi0 = np.arctan2(ci, -si * np.sin(np.arctan2(Y, X)))
 
-    # half-orbits: centred on top (far) and bottom (near), each already symmetric
-    half = random.uniform(0.86, 1.0) * math.pi / 2
-    traces = [
-        (FAR, arc_path(r, fr, m, dy, 3 * math.pi / 2, half), half / math.pi),
-        (NEAR, arc_path(r, fr, m, dy, math.pi / 2, half, k=1.0), half / math.pi),
+    light = np.zeros((h, w, 3))
+    clear = np.ones((h, w))             # how much of what lies behind still shows
+    lensed = np.zeros((h, w))
+    for n in range(3):
+        psi = psi0 + n * math.pi
+        r = radius_at(tab, b, psi)
+        hit = (r >= R_IN) & (r <= R_OUT)
+        r = np.where(hit, r, 100.0)
+        f, opacity = emission(r)
+        # redshift of gas on circular orbits: gravitational and Doppler
+        g = np.sqrt(np.clip(1 - 3.0 / r, 1e-3, 1)) / (1 + r ** -1.5 * X * si)
+        tone = np.clip(np.log1p(EXPOSURE * f * g ** BEAMING) / math.log1p(EXPOSURE * 1.6), 0, 1) ** GAMMA
+        temp = g * (R_IN / r) ** 0.75 * np.clip(1 - np.sqrt(R_IN / r), 0, 1) ** 0.25 / 0.36
+        a = np.where(hit, opacity, 0.0)
+        light += (clear * a * tone)[..., None] * tint(np.clip(temp - 0.55, 0, 1))
+        # how far lensing moved this point from where a flat projection puts it
+        shift = b - r * np.sin(psi) if n == 0 else 99.0
+        lensed += clear * a * smoothstep(0.8, 2.2, shift)
+        clear *= 1 - a
+    # the higher-order images pile up on the photon ring
+    ring = np.exp(-((b - B_CRIT * 1.004) / 0.03) ** 2) * (1 + 0.12 * X / B_CRIT) ** -3
+    light += (0.6 * ring * clear)[..., None] * tint(np.clip(0.5 - 0.5 * X / B_CRIT, 0, 1))
+
+    sky = np.where((b < B_CRIT)[..., None], 0.0, to_lin(hex_rgb(SKY)))
+    stars = np.zeros((h + 8, w + 8))
+    k5 = np.outer([1, 4, 6, 4, 1], [1, 4, 6, 4, 1]) / 36.0
+    for _ in range(90):
+        x, y, v = int(rng.uniform(0, w)), int(rng.uniform(0, h)), rng.uniform(0.1, 0.55) ** 2
+        if (X[y, x] / 31) ** 2 + (Y[y, x] / 11) ** 2 > 1:
+            stars[y + 2:y + 7, x + 2:x + 7] += v * k5
+    sky = sky + stars[4:-4, 4:-4, None] * [0.8, 0.82, 0.9]
+
+    glow = blur(light, 2.5 * SCALE * SS) * 0.12 + blur(light, 12 * SCALE * SS) * 0.035
+    out = sky * np.clip(1 - 6 * (light.max(-1) + glow.max(-1)), 0, 1)[..., None] + light + glow
+    out = out.reshape(h // SS, SS, w // SS, SS, 3).mean((1, 3))
+
+    # the arcs only: where they fold into the disc their gas moves along the line of sight
+    m = blur(lensed * smoothstep(2.0, 4.5, np.abs(Y)), 3 * SCALE * SS)
+    m = m.reshape(H // 4, h // (H // 4), W // 4, w // (W // 4)).mean((1, 3))
+    return to8(to_srgb(np.clip(out, 0, 1))), to8(np.clip(m, 0, 1))
+
+
+def to8(x):
+    return (x * 255 + 0.5).astype(np.uint8)
+
+
+# ---- gas lanes ----
+def lanes():
+    """alpha of dark, orbit-aligned lanes on a ring RHO0..1 of a square texture"""
+    nr, nphi = 256, 1024
+    rho = np.linspace(RHO0, 1.0, nr)
+    kr = np.fft.fftfreq(nr)[:, None] * nr
+    kp = np.fft.fftfreq(nphi)[None, :] * nphi
+    # anisotropic noise: short across the orbit, long along it, periodic in phi
+    n = np.zeros((nr, nphi))
+    for ckr, ckp, amp in ((5.0, 10.0, 1.0), (13.0, 24.0, 0.4)):
+        spectrum = np.fft.fft2(rng.standard_normal((nr, nphi)))
+        band = np.exp(-(kr / ckr) ** 2 - (kp / ckp) ** 2) * (1 - np.exp(-(kr / 1.2) ** 2 - (kp / 1.2) ** 2))
+        o = np.real(np.fft.ifft2(spectrum * band))
+        n += amp * (o - o.mean()) / o.std()
+    n = (n - n.mean()) / n.std()
+    edge = smoothstep(RHO0, RHO0 + 0.05, rho) * (1 - smoothstep(0.9, 1.0, rho))
+    a = LANE_ALPHA * smoothstep(0.0, 1.8, n) * edge[:, None]
+
+    c = (np.arange(TEX) + 0.5) / TEX * 2 - 1
+    x, y = np.meshgrid(c, c)
+    rr = np.hypot(x, y)
+    # trailing spiral: the lanes are wound up by the differential rotation
+    phi = (np.arctan2(y, x) + 8.0 * np.log(np.maximum(rr, 1e-3))) % (2 * np.pi)
+    fr = np.clip((rr - RHO0) / (1 - RHO0) * (nr - 1), 0, nr - 1.001)
+    fp = phi / (2 * np.pi) * nphi
+    i, j = fr.astype(int), np.floor(fp).astype(int) % nphi
+    j1 = (j + 1) % nphi
+    tr, tp = fr - i, fp - np.floor(fp)
+    v = ((a[i, j] * (1 - tp) + a[i, j1] * tp) * (1 - tr)
+         + (a[i + 1, j] * (1 - tp) + a[i + 1, j1] * tp) * tr)
+    return to8(np.where((rr >= RHO0) & (rr <= 1.0), np.clip(v, 0, 1), 0.0))
+
+
+# ---- svg ----
+def webp(pixels, **kw):
+    buf = io.BytesIO()
+    Image.fromarray(pixels).save(buf, "WEBP", method=6, **kw)
+    return "data:image/webp;base64," + base64.b64encode(buf.getvalue()).decode()
+
+
+def ring(r0, r1):
+    def circle(r):
+        return f"M{r:.1f},0A{r:.1f},{r:.1f} 0 1 0 {-r:.1f},0A{r:.1f},{r:.1f} 0 1 0 {r:.1f},0Z"
+    return circle(r1) + circle(r0)
+
+
+def main():
+    base, arcs = render_base(geodesics())
+    alpha = lanes()
+    tex = np.zeros((TEX, TEX, 4), np.uint8)
+    tex[..., 3] = alpha
+
+    css = [
+        "@keyframes o{to{transform:rotate(-360deg)}}",
+        ".o{transform-origin:0 0;animation:o linear infinite}",
     ]
-    # some orbits run only over the top or only in front
-    if random.random() < 0.30:
-        traces.pop(random.randrange(2))
+    for i, layer in enumerate(LAYERS):
+        period = T0 * (layer[4] / 7.0) ** 1.5
+        css.append(f".o{i}{{animation-duration:{period:.2f}s;animation-delay:-{period * rng.uniform():.2f}s}}")
+    css.append("@media (prefers-reduced-motion:reduce){.o{animation:none}}")
 
-    for bucket, d, span in traces:
-        bucket.append(
-            f'<use href="#{geom_id(d)}" fill="none" stroke="#e4e4ea" '
-            f'stroke-opacity="{op * 0.42:.3f}" stroke-width="{sw:.2f}" stroke-linecap="round"/>'
-        )
-        # particles riding that same trace
-        for lane in range(2):
-            lop = min((0.50 * math.exp(-1.8 * t) + 0.07) * random.uniform(0.45, 1.2), 0.7)
-            bucket.append(
-                flow(d, r, fr, lop, random.uniform(0.55, 1.05), random.uniform(0.06, 0.22), span)
-            )
-
-        # smeared trail: longer dashes, dimmer, slightly off-plane
-        bucket.append(
-            flow(d, r, fr, op * random.uniform(0.5, 1.0), random.uniform(0.3, 0.6),
-                 random.uniform(0.45, 1.1), span, color="#e4e4ea")
-        )
-
-out.extend(FAR)
-
-# ---- the well, then the shadow ----
-out.append(f'<ellipse cx="{CX}" cy="{CY}" rx="{VOID_RX * 2.20:.1f}" ry="{VOID_RY * 2.15:.1f}" fill="url(#sink)"/>')
-out.append(f'<ellipse cx="{CX}" cy="{CY}" rx="{VOID_RX * 1.16:.1f}" ry="{VOID_RY * 1.15:.1f}" fill="url(#core)"/>')
-out.append(
-    f'<path d="{ring_path(VOID_RX, VOID_RY / VOID_RX, wobble([random.uniform(-0.016, 0.016) * (0.6 ** k) for k in range(3)]), 0.0, steps=320)}" fill="#000000"/>'
-)
-
-# ---- photon ring: rims the horizon, so it goes on top of the shadow ----
-out.append('<g class="ph">')
-for j in range(3):
-    r = VOID_RX * (1.10 + 0.055 * j)
-    fr = 0.93 - 0.03 * j
-    d = ring_path(r, fr, wobble([random.uniform(-0.02, 0.02) * (0.6 ** k) for k in range(3)]), 0.0, steps=300)
+    out = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
+        f'viewBox="0 0 {W} {H}" role="img" aria-label="Black hole">',
+        "<defs>",
+        f'<image id="t" x="-1" y="-1" width="2" height="2" href="{webp(tex, quality=0, alpha_quality=40)}"/>',
+    ]
+    for i, (_, r0, r1, *_) in enumerate(LAYERS):
+        out.append(f'<clipPath id="c{i}"><path clip-rule="evenodd" d="{ring(r0 * S, r1 * S)}"/></clipPath>')
     out.append(
-        f'<path d="{d}" fill="none" stroke="#f3f3f6" stroke-opacity="{0.30 - 0.075 * j:.3f}" '
-        f'stroke-width="{0.8 - 0.18 * j:.2f}"/>'
+        f'<mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}">'
+        f'<image width="{W}" height="{H}" href="{webp(np.dstack([arcs] * 3), quality=60)}"/></mask>'
     )
-out.append('</g>')
+    out.append("<style>" + "".join(css) + "</style>")
+    out.append("</defs>")
+    out.append(f'<image width="{W}" height="{H}" href="{webp(base, quality=80)}"/>')
 
-# ---- the near half of the disk, crossing in front of the sphere ----
-out.extend(NEAR)
+    # the disc plane is a circle squashed by cos i; the lensed arcs stay round
+    for plane, open_, close in (
+        ("disc", f'<g transform="translate({CX:g} {CY:g}) scale(1 {math.cos(INC):.4f})">', "</g>"),
+        ("sky", f'<g mask="url(#m)"><g transform="translate({CX:g} {CY:g})">', "</g></g>"),
+    ):
+        out.append(open_)
+        for i, (p, r0, r1, radius, _, opacity) in enumerate(LAYERS):
+            if p != plane:
+                continue
+            op = f' opacity="{opacity:g}"' if opacity < 1 else ""
+            out.append(
+                f'<g clip-path="url(#c{i})"{op}><g transform="scale({radius * S:g})">'
+                f'<use href="#t" class="o o{i}"/></g></g>'
+            )
+        out.append(close)
+    out.append("</svg>")
+    sys.stdout.write("\n".join(out) + "\n")
 
-out.append('</svg>')
 
-defs = "".join(f'<path id="{i}" d="{d}" pathLength="100"/>' for d, i in GEOM.items())
-head = out.index('</defs>')
-out.insert(head, defs)
-
-sys.stdout.write("\n".join(out) + "\n")
+main()
